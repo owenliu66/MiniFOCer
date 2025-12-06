@@ -1,0 +1,242 @@
+[
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\main.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\main.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/main.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/main.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\gpio.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\gpio.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/gpio.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/gpio.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\adc.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\adc.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/adc.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/adc.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\dma.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\dma.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/dma.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/dma.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\fdcan.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\fdcan.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/fdcan.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/fdcan.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\hrtim.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\hrtim.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/hrtim.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/hrtim.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\spi.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\spi.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/spi.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/spi.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\tim.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\tim.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/tim.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/tim.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\stm32g4xx_it.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\stm32g4xx_it.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/stm32g4xx_it.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/stm32g4xx_it.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\stm32g4xx_hal_msp.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\stm32g4xx_hal_msp.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/stm32g4xx_hal_msp.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/stm32g4xx_hal_msp.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\sysmem.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\sysmem.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/sysmem.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/sysmem.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\syscalls.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\syscalls.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/syscalls.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/syscalls.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -x assembler-with-cpp -MMD -MP -O3 -DNDEBUG -o CMakeFiles\\MiniFOCer.dir\\startup_stm32g474xx.s.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\startup_stm32g474xx.s",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/startup_stm32g474xx.s",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/startup_stm32g474xx.s.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\FastMath.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\FastMath.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/FastMath.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/FastMath.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o CMakeFiles\\MiniFOCer.dir\\Core\\Src\\FOC.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\FOC.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/FOC.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir/Core/Src/FOC.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Core\\Src\\system_stm32g4xx.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Core\\Src\\system_stm32g4xx.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Core/Src/system_stm32g4xx.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Core/Src/system_stm32g4xx.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_utils.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_utils.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_utils.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_utils.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_exti.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_exti.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_exti.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_exti.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_gpio.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_gpio.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_gpio.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_gpio.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_adc.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_adc.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_adc.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_adc.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_dma.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_dma.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_dma.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_dma.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_pwr.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_pwr.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_pwr.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_pwr.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_rcc.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_rcc.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_rcc_ex.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_rcc_ex.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_rcc_ex.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_flash.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_flash.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_flash_ex.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_flash_ex.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ex.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_flash_ramfunc.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_flash_ramfunc.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_flash_ramfunc.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_gpio.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_gpio.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_gpio.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_exti.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_exti.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_exti.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_dma.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_dma.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_dma_ex.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_dma_ex.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_dma_ex.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_pwr.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_pwr.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_pwr_ex.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_pwr_ex.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_pwr_ex.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_cortex.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_cortex.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cortex.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_fdcan.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_fdcan.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_fdcan.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_hrtim.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_hrtim.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_hrtim.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_hrtim.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_spi.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_ll_spi.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_spi.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_spi.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_tim.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_tim.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c.obj"
+},
+{
+  "directory": "C:/OwenStuff/Capstone/MiniFOCer/build/Release",
+  "command": "C:\\PROGRA~2\\ARMGNU~1\\142BCE~1.3RE\\bin\\AR19DD~1.EXE -DSTM32G474xx -DUSE_FULL_LL_DRIVER -DUSE_HAL_DRIVER -IC:/OwenStuff/Capstone/MiniFOCer/Core/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Inc/Legacy -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Device/ST/STM32G4xx/Include -IC:/OwenStuff/Capstone/MiniFOCer/Drivers/CMSIS/Include  -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -mcpu=cortex-m4 -mfpu=fpv4-sp-d16 -mfloat-abi=hard  -Wall -Wextra -Wpedantic -fdata-sections -ffunction-sections -Os -g0 -std=gnu11 -o cmake\\stm32cubemx\\CMakeFiles\\STM32_Drivers.dir\\__\\__\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_tim_ex.c.obj -c C:\\OwenStuff\\Capstone\\MiniFOCer\\Drivers\\STM32G4xx_HAL_Driver\\Src\\stm32g4xx_hal_tim_ex.c",
+  "file": "C:/OwenStuff/Capstone/MiniFOCer/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.c",
+  "output": "C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim_ex.c.obj"
+}
+]

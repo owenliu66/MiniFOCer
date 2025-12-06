@@ -1,0 +1,8 @@
+{
+	"InstallScripts" : 
+	[
+		"C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake_install.cmake",
+		"C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
