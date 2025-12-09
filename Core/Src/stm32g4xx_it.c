@@ -22,6 +22,13 @@
 #include "stm32g4xx_it.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include <math.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
+#include "defines.h"
+#include "FOC.h"
+#include "A1333.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -57,7 +64,9 @@
 /* External variables --------------------------------------------------------*/
 extern FDCAN_HandleTypeDef hfdcan1;
 /* USER CODE BEGIN EV */
-
+extern volatile FOC_data* FOC;
+extern A1333_t encoder_1;
+extern volatile bool SPI_Wait;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -218,7 +227,8 @@ void FDCAN1_IT0_IRQHandler(void)
 void SPI1_IRQHandler(void)
 {
   /* USER CODE BEGIN SPI1_IRQn 0 */
-
+  A1333_SPI_IRQHandler(&encoder_1);
+  SPI_Wait = false;
   /* USER CODE END SPI1_IRQn 0 */
   /* USER CODE BEGIN SPI1_IRQn 1 */
 
@@ -244,24 +254,12 @@ void SPI3_IRQHandler(void)
 void HRTIM1_TIMA_IRQHandler(void)
 {
   /* USER CODE BEGIN HRTIM1_TIMA_IRQn 0 */
-
+  LL_HRTIM_ClearFlag_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
+  FOC_update(FOC);
   /* USER CODE END HRTIM1_TIMA_IRQn 0 */
   /* USER CODE BEGIN HRTIM1_TIMA_IRQn 1 */
 
   /* USER CODE END HRTIM1_TIMA_IRQn 1 */
-}
-
-/**
-  * @brief This function handles HRTIM timer C global interrupt.
-  */
-void HRTIM1_TIMC_IRQHandler(void)
-{
-  /* USER CODE BEGIN HRTIM1_TIMC_IRQn 0 */
-
-  /* USER CODE END HRTIM1_TIMC_IRQn 0 */
-  /* USER CODE BEGIN HRTIM1_TIMC_IRQn 1 */
-
-  /* USER CODE END HRTIM1_TIMC_IRQn 1 */
 }
 
 /* USER CODE BEGIN 1 */

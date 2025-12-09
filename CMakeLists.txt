@@ -50,6 +50,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     Core/Src/FastMath.c
     Core/Src/FOC.c
+    Core/Src/A1333.c
 )
 
 # Add include paths

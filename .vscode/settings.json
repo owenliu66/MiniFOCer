@@ -1,0 +1,7 @@
+{
+    "cortex-debug.variableUseNaturalFormat": true,
+    "C_Cpp.default.compilerPath": "C:/program files (x86)/arm gnu toolchain arm-none-eabi/14.3 rel1/bin/arm-none-eabi-gcc.exe",
+    "files.associations": {
+        "compare": "c"
+    },
+}

@@ -23,30 +23,15 @@
 #define GATE_DRIVER_RESET_US 1U
 #define deadTime 640
 
-// #define USE_EMRAX_MOTOR
-#define USE_AMK_MOTOR
-
-#ifdef USE_EMRAX_MOTOR
-#define N_STEP_ENCODER 8192
-#define N_POLES 10
-#define Kt 0.94f
-#define J 0.02521f
-#define MAX_SPEED 5500/60.0f*1e-6f*N_STEP_ENCODER
-#endif
-#ifdef USE_AMK_MOTOR
-//#define N_STEP_ENCODER 262144
-#define N_STEP_ENCODER 65536 // waveform appears to be 17-bit, first bit is too noisy so 16-bit
-#define N_POLES 5
-#define Kt 0.26f
-#define J 2.74e-4f
-#define MAX_SPEED 20000.0f/60.0f*1e-6f*N_STEP_ENCODER
-#endif
+#define N_STEP_ENCODER 32768
+#define N_POLES 7
+#define MAX_SPEED 3000.0f/60.0f*1e-6f*N_STEP_ENCODER
 
 // FOC constants
-#define MAX_CMD_D 0.5f
-#define MIN_CMD_D -0.5f
-#define MAX_CMD_Q 1.3f
-#define MIN_CMD_Q -1.3f
+#define MAX_CMD_D 0.1f
+#define MIN_CMD_D -0.1f
+#define MAX_CMD_Q 1.0f
+#define MIN_CMD_Q -1.0f
 
 // CANBus receive IDs
 #define CAN_CMD_ID 0x201708UL

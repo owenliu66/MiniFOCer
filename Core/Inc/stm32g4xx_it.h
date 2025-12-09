@@ -59,7 +59,6 @@ void FDCAN1_IT0_IRQHandler(void);
 void SPI1_IRQHandler(void);
 void SPI3_IRQHandler(void);
 void HRTIM1_TIMA_IRQHandler(void);
-void HRTIM1_TIMC_IRQHandler(void);
 /* USER CODE BEGIN EFP */
 
 /* USER CODE END EFP */

@@ -35,6 +35,7 @@
 #include "defines.h"
 #include "FastMath.h"
 #include "FOC.h"
+#include "A1333.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -74,9 +75,17 @@ uint32_t motor_last2MeasTime;
 volatile float motor_speed = 0.0f; // encoder LSBs / us
 volatile int32_t Encoder_os = 0;
 
+// Encoders
+A1333_t encoder_1 = {
+  .SPIx = SPI1,
+  .CS_Port = GPIOD,
+  .CS_Pin = LL_GPIO_PIN_2,
+  .micros = &(TIM2->CNT),
+};
+
 // ADC variables
 volatile int16_t adc_data[64];
-volatile int16_t adc_os[3] = {0, 0, 0};
+volatile int16_t adc_os[4] = {0, 0, 0, 0};
 
 // timing stuff
 uint32_t micros = 0, lastMicros = 0;
@@ -164,10 +173,9 @@ int main(void)
   LL_TIM_EnableCounter(TIM2);
 
   // Encoder setup
-  LL_SPI_Enable(SPI1);
-  LL_SPI_EnableIT_RXNE(SPI1);
+  A1333_Init(&encoder_1);
 
-  // Enable ADC1 (motor 1 phase current sensors) with DMA
+  // Enable ADC1 (motor 2 phase current sensors) with DMA
   LL_ADC_Enable(ADC1);
   while (!LL_ADC_IsActiveFlag_ADRDY(ADC1));
   LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_1, (uint32_t)&ADC1->DR);
@@ -176,7 +184,7 @@ int main(void)
   LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_1);
   LL_ADC_REG_StartConversion(ADC1);
 
-  // Enable ADC2 (motor 2 phase current sensors) with DMA
+  // Enable ADC2 (motor 1 phase current sensors) with DMA
   LL_ADC_Enable(ADC2);
   while (!LL_ADC_IsActiveFlag_ADRDY(ADC2));
   LL_DMA_SetPeriphAddress(DMA2, LL_DMA_CHANNEL_1, (uint32_t)&ADC2->DR);
@@ -190,17 +198,17 @@ int main(void)
   while (!LL_ADC_IsActiveFlag_ADRDY(ADC3));
   LL_DMA_SetPeriphAddress(DMA1, LL_DMA_CHANNEL_2, (uint32_t)&ADC3->DR);
   LL_DMA_SetMemoryAddress(DMA1, LL_DMA_CHANNEL_2, (uint32_t)&adc_data[4]);
-  LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_2, 2);
+  LL_DMA_SetDataLength(DMA1, LL_DMA_CHANNEL_2, 3);
   LL_DMA_EnableChannel(DMA1, LL_DMA_CHANNEL_2);
   LL_ADC_REG_StartConversion(ADC3);
 
   // Enable ADC4 (audio 2) with DMA
   LL_ADC_Enable(ADC4);
   while (!LL_ADC_IsActiveFlag_ADRDY(ADC4));
-  LL_DMA_SetPeriphAddress(DMA2, LL_DMA_CHANNEL_1, (uint32_t)&ADC4->DR);
-  LL_DMA_SetMemoryAddress(DMA2, LL_DMA_CHANNEL_1, (uint32_t)&adc_data[7]);
-  LL_DMA_SetDataLength(DMA2, LL_DMA_CHANNEL_1, 1);
-  LL_DMA_EnableChannel(DMA2, LL_DMA_CHANNEL_1);
+  LL_DMA_SetPeriphAddress(DMA2, LL_DMA_CHANNEL_2, (uint32_t)&ADC4->DR);
+  LL_DMA_SetMemoryAddress(DMA2, LL_DMA_CHANNEL_2, (uint32_t)&adc_data[7]);
+  LL_DMA_SetDataLength(DMA2, LL_DMA_CHANNEL_2, 1);
+  LL_DMA_EnableChannel(DMA2, LL_DMA_CHANNEL_2);
   LL_ADC_REG_StartConversion(ADC4);
 
   // CANbus setup
@@ -255,12 +263,52 @@ int main(void)
 
   // enable HRTIM timer A interrupt(FOC calculations)
   LL_HRTIM_EnableIT_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
+  resetGateDriver();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint32_t counter = 0;
   while (1)
   {
+    micros = TIM2->CNT;
+    dt_i = micros - lastMicros;
+    dt_f = dt_i * 1e-6f;
+
+    SPI_Wait = true;
+    A1333_Update(&encoder_1);
+    uint32_t timeout = micros + 100;
+    while (SPI_Wait) {
+      if (TIM2->CNT >= timeout) {
+        SPI_Wait = false;
+      }
+    }
+
+    // move encoder info to FOC struct
+    __disable_irq();
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    FOC->motor_PhysPosition = counter % N_STEP_ENCODER;
+    FOC->motor_lastMeasTime = encoder_1.sampleTime;
+    FOC->motor_speed = encoder_1.speed;
+    FOC->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584;
+    FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584;
+    FOC->V_current = -FOC->U_current - FOC->W_current; // assuming balanced currents
+    FOC->TargetCurrent = 0.2f; // for testing
+    // Flush pipeline
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __enable_irq();
+
+    while (TIM2->CNT - micros < 503);
+    lastMicros = micros;
+    counter++;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -319,25 +367,27 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 void resetGateDriver(){
-  LL_GPIO_SetOutputPin(GPIOC, LL_GPIO_PIN_13);
-  LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_2);
-}
-void disableGateDriver(){
   LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_13);
   LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_2);
+}
+void disableGateDriver(){
+  LL_GPIO_SetOutputPin(GPIOC, LL_GPIO_PIN_13);
+  LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_2);
 }
 
 void writePwm(uint32_t timer, int32_t duty){
   if (duty < 0) duty = 0;
   else if (duty > 64000) duty = 64000;
-  if (duty > 32000) {
-    LL_HRTIM_TIM_SetCompare1(HRTIM1, timer, 0);
-    LL_HRTIM_TIM_SetCompare3(HRTIM1, timer, duty);
-  }
-  else {
-    LL_HRTIM_TIM_SetCompare1(HRTIM1, timer, 64000 - duty);
-    LL_HRTIM_TIM_SetCompare3(HRTIM1, timer, 0);
-  }
+  // if (duty > 32000) {
+  //   LL_HRTIM_TIM_SetCompare1(HRTIM1, timer, 0);
+  //   LL_HRTIM_TIM_SetCompare3(HRTIM1, timer, duty);
+  // }
+  // else {
+  //   LL_HRTIM_TIM_SetCompare1(HRTIM1, timer, 64000 - duty);
+  //   LL_HRTIM_TIM_SetCompare3(HRTIM1, timer, 0);
+  // }
+  LL_HRTIM_TIM_SetCompare1(HRTIM1, timer, 0);
+  LL_HRTIM_TIM_SetCompare3(HRTIM1, timer, duty);
 }
 /* USER CODE END 4 */
 
