@@ -227,11 +227,20 @@ void FDCAN1_IT0_IRQHandler(void)
 void SPI1_IRQHandler(void)
 {
   /* USER CODE BEGIN SPI1_IRQn 0 */
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   A1333_SPI_IRQHandler(&encoder_1);
   SPI_Wait = false;
   /* USER CODE END SPI1_IRQn 0 */
   /* USER CODE BEGIN SPI1_IRQn 1 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END SPI1_IRQn 1 */
 }
 

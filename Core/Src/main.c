@@ -226,8 +226,8 @@ int main(void)
 
   // initialize FOC variables
   FOC->Encoder_os = Encoder_os;
-  FOC->Kp_Id = 0.0f; FOC->Ki_Id = 10.0f;
-  FOC->Kp_Iq = 0.0f; FOC->Ki_Iq = 10.0f;
+  FOC->Kp_Id = 0.1f; FOC->Ki_Id = 100.0f;
+  FOC->Kp_Iq = 0.1f; FOC->Ki_Iq = 100.0f;
   FOC->integ_d = 0.0f;
   FOC->integ_q = 0.0f;
   FOC->motor_speed = 0.0f;
@@ -264,6 +264,39 @@ int main(void)
   // enable HRTIM timer A interrupt(FOC calculations)
   LL_HRTIM_EnableIT_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
   resetGateDriver();
+
+  TIM2->CNT = 0;
+  while (TIM2->CNT < 2000000) {
+    micros = TIM2->CNT;
+    __disable_irq();
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    FOC->motor_PhysPosition = 0;
+    FOC->TargetCurrent = 5.0f * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 131.0f) * (1.0f - fmin((float)TIM2->CNT * 1e-6f, 1.0f));
+    FOC->TargetFieldWk = 5.0f;
+    FOC->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
+    FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
+    FOC->V_current = -FOC->U_current - FOC->W_current; // assuming balanced currents
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __ASM("nop");
+    __enable_irq();
+    SPI_Wait = true;
+    A1333_Update(&encoder_1);
+    uint32_t timeout = micros + 100;
+    while (SPI_Wait) {
+      if (TIM2->CNT >= timeout) {
+        SPI_Wait = false;
+      }
+    }
+    while (TIM2->CNT - micros < 31);
+  }
+  FOC->Encoder_os = encoder_1.angle;
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -291,13 +324,14 @@ int main(void)
     __ASM("nop");
     __ASM("nop");
     __ASM("nop");
-    FOC->motor_PhysPosition = counter % N_STEP_ENCODER;
+    FOC->motor_PhysPosition = encoder_1.angle;
     FOC->motor_lastMeasTime = encoder_1.sampleTime;
     FOC->motor_speed = encoder_1.speed;
-    FOC->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584;
-    FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584;
+    FOC->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
+    FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
     FOC->V_current = -FOC->U_current - FOC->W_current; // assuming balanced currents
-    FOC->TargetCurrent = 0.2f; // for testing
+    FOC->TargetCurrent = 1.0f; // for testing
+    FOC->TargetFieldWk = 0.0f; // for testing
     // Flush pipeline
     __ASM("nop");
     __ASM("nop");
@@ -306,7 +340,7 @@ int main(void)
     __ASM("nop");
     __enable_irq();
 
-    while (TIM2->CNT - micros < 503);
+    while (TIM2->CNT - micros < 37);
     lastMicros = micros;
     counter++;
     /* USER CODE END WHILE */
@@ -376,8 +410,8 @@ void disableGateDriver(){
 }
 
 void writePwm(uint32_t timer, int32_t duty){
-  if (duty < 0) duty = 0;
-  else if (duty > 64000) duty = 64000;
+  if (duty < 100) duty = 0;
+  else if (duty > 63900) duty = 64000;
   // if (duty > 32000) {
   //   LL_HRTIM_TIM_SetCompare1(HRTIM1, timer, 0);
   //   LL_HRTIM_TIM_SetCompare3(HRTIM1, timer, duty);

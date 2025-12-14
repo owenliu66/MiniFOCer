@@ -31,19 +31,19 @@ volatile const uint8_t SVPWM_PermuataionMatrix[6][3] = {
 
 void FOC_update(volatile FOC_data* self) {
     // FOC
-    self->temp_it = self->motor_PhysPosition + self->Encoder_os;
+    self->temp_it = self->motor_PhysPosition - self->Encoder_os;
     self->temp_it_next = self->temp_it;
     // compensate for the time delay if motor speed is high
     // if (fabsf(self->motor_speed) > ((300.0f/60.0f)*1e-6f*N_STEP_ENCODER * 0.02f)){
     //     uint32_t TIM2_CNT = TIM2->CNT;
     //     self->temp_it      += ((int32_t)((TIM2_CNT - self->motor_lastMeasTime)) + (int32_t)(0UL << self->F_sw)) * (int32_t)(self->motor_speed);
-    //     self->temp_it_next += ((int32_t)((TIM2_CNT - self->motor_lastMeasTime)) + (int32_t)(75UL << self->F_sw)) * (int32_t)(self->motor_speed);
+    //     self->temp_it_next += ((int32_t)((TIM2_CNT - self->motor_lastMeasTime)) + (int32_t)(19UL << self->F_sw)) * (int32_t)(self->motor_speed);
     // }
-    // self->temp_it *= N_POLES;
-    // self->temp_it %= N_STEP_ENCODER;
+    self->temp_it *= N_POLES;
+    self->temp_it %= N_STEP_ENCODER;
     self->motor_ElecPosition = (float)(self->temp_it) / (float)N_STEP_ENCODER;
-    // self->temp_it_next *= N_POLES;
-    // self->temp_it_next %= N_STEP_ENCODER;
+    self->temp_it_next *= N_POLES;
+    self->temp_it_next %= N_STEP_ENCODER;
     self->motor_ElecPosition_next = (float)(self->temp_it_next) / (float)N_STEP_ENCODER;
     // motor_ElecPosition = 0.0f;
     self->sin_elec_position = sinf(self->motor_ElecPosition * PIx2);
@@ -66,13 +66,12 @@ void FOC_update(volatile FOC_data* self) {
     self->I_q = self->I_b * self->cos_elec_position - self->I_a * self->sin_elec_position;
     self->I_d_avg += (self->I_d - self->I_d_avg) * 0.001f;
     self->I_q_avg += (self->I_q - self->I_q_avg) * 0.001f;
+    
+    float RpmSafetyMult = (fabsf(self->motor_speed) > MAX_SPEED) ? 0.0f : 1.0f;
+
+    // RpmSafetyMult = 1.0f;
     // PI controllers on Q and D
-    float RpmSafetyMult = (fabsf(self->motor_speed) > MAX_SPEED * 0.9f) ? 
-        (MAX_SPEED - fabsf(self->motor_speed)) / MAX_SPEED * 10.0f : 1.0f;
-
-    RpmSafetyMult = 1.0f;
-
-    self->I_d_err = self->TargetFieldWk * RpmSafetyMult - self->I_d;
+    self->I_d_err = self->TargetFieldWk - self->I_d;
     self->I_q_err = self->TargetCurrent * RpmSafetyMult - self->I_q;
     self->integ_d += self->I_d_err * self->Ki_Id * 25e-6f * ((float)(1U << self->F_sw));
     self->integ_d = (self->integ_d > MAX_CMD_D) ? MAX_CMD_D : self->integ_d;
@@ -83,8 +82,8 @@ void FOC_update(volatile FOC_data* self) {
     self->integ_q = (self->integ_q < MIN_CMD_Q) ? MIN_CMD_Q : self->integ_q;
     self->cmd_q = self->I_q_err * self->Kp_Iq + self->integ_q;
 
-    self->cmd_d = 0.0f;
-    self->cmd_q = 0.1f;
+    // self->cmd_d = 0.0f;
+    // self->cmd_q = 0.1f;
 
     // Inverse Park transform
     self->cmd_a = self->cmd_d * self->cos_elec_position_next - self->cmd_q * self->sin_elec_position_next;
