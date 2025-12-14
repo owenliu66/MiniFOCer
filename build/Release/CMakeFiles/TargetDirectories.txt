@@ -1,6 +1,0 @@
-C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/MiniFOCer.dir
-C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/edit_cache.dir
-C:/OwenStuff/Capstone/MiniFOCer/build/Release/CMakeFiles/rebuild_cache.dir
-C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir
-C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/edit_cache.dir
-C:/OwenStuff/Capstone/MiniFOCer/build/Release/cmake/stm32cubemx/CMakeFiles/rebuild_cache.dir
