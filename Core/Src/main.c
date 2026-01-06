@@ -85,7 +85,7 @@ A1333_t encoder_1 = {
 
 // ADC variables
 volatile int16_t adc_data[64];
-volatile int16_t adc_os[4] = {0, 0, 0, 0};
+volatile int16_t adc_os[64] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 // timing stuff
 uint32_t micros = 0, lastMicros = 0;
@@ -135,7 +135,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+  LL_SYSCFG_EnableAnalogBooster();
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -241,6 +241,10 @@ int main(void)
     adc_os[1] = (adc_os[1]*3 + adc_data[1]) >> 2;
     adc_os[2] = (adc_os[2]*3 + adc_data[2]) >> 2;
     adc_os[3] = (adc_os[3]*3 + adc_data[3]) >> 2;
+    adc_os[4] = (adc_os[4]*3 + adc_data[4]) >> 2;
+    adc_os[5] = (adc_os[5]*3 + adc_data[5]) >> 2;
+    adc_os[6] = (adc_os[6]*3 + adc_data[6]) >> 2;
+    adc_os[7] = (adc_os[7]*3 + adc_data[7]) >> 2;
   }
 
   // Enable HRTIM (gate drive signals)
@@ -276,7 +280,7 @@ int main(void)
     __ASM("nop");
     FOC->motor_PhysPosition = 0;
     FOC->TargetCurrent = 5.0f * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 131.0f) * (1.0f - fmin((float)TIM2->CNT * 1e-6f, 1.0f));
-    FOC->TargetFieldWk = 5.0f;
+    FOC->TargetFieldWk = 0.0f;
     FOC->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
     FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
     FOC->V_current = -FOC->U_current - FOC->W_current; // assuming balanced currents
@@ -330,7 +334,8 @@ int main(void)
     FOC->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
     FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
     FOC->V_current = -FOC->U_current - FOC->W_current; // assuming balanced currents
-    FOC->TargetCurrent = 1.0f; // for testing
+    // FOC->TargetCurrent = 1.0f; // for testing
+    FOC->TargetCurrent = 0.1f + (adc_data[7] - adc_os[7]) * 0.01f;
     FOC->TargetFieldWk = 0.0f; // for testing
     // Flush pipeline
     __ASM("nop");
