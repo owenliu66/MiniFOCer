@@ -66,7 +66,6 @@ extern FDCAN_HandleTypeDef hfdcan1;
 /* USER CODE BEGIN EV */
 extern volatile FOC_data* FOC;
 extern A1333_t encoder_1;
-extern volatile bool SPI_Wait;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -227,20 +226,10 @@ void FDCAN1_IT0_IRQHandler(void)
 void SPI1_IRQHandler(void)
 {
   /* USER CODE BEGIN SPI1_IRQn 0 */
-  __ASM("nop");
-  __ASM("nop");
-  __ASM("nop");
-  __ASM("nop");
-  __ASM("nop");
-  A1333_SPI_IRQHandler(&encoder_1);
-  SPI_Wait = false;
+  
   /* USER CODE END SPI1_IRQn 0 */
   /* USER CODE BEGIN SPI1_IRQn 1 */
-  __ASM("nop");
-  __ASM("nop");
-  __ASM("nop");
-  __ASM("nop");
-  __ASM("nop");
+  
   /* USER CODE END SPI1_IRQn 1 */
 }
 
@@ -250,10 +239,19 @@ void SPI1_IRQHandler(void)
 void SPI3_IRQHandler(void)
 {
   /* USER CODE BEGIN SPI3_IRQn 0 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  A1333_SPI_IRQHandler(&encoder_1);
   /* USER CODE END SPI3_IRQn 0 */
   /* USER CODE BEGIN SPI3_IRQn 1 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END SPI3_IRQn 1 */
 }
 

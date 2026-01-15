@@ -89,6 +89,7 @@ void A1333_SPI_IRQHandler(A1333_t* sensor) {
 }
 
 void A1333_Update(A1333_t* sensor) {
+    while (sensor->isUpdateOngoing);
     __disable_irq();
     sensor->isUpdateOngoing = true;
     LL_GPIO_ResetOutputPin(sensor->CS_Port, sensor->CS_Pin);

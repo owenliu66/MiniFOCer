@@ -65,18 +65,16 @@ uint8_t TxData[64];
 volatile FOC_data* FOC;
 
 // Motor variables
-volatile bool SPI_Wait = false;
-volatile uint8_t SPI_WaitState = 0;
-volatile uint32_t SPI_buf = 0U;
-int32_t motor_PhysPosition;
-int32_t motor_lastPhysPosition;
-volatile uint32_t motor_lastMeasTime, motor_lastMeasTime2;
-uint32_t motor_last2MeasTime;
-volatile float motor_speed = 0.0f; // encoder LSBs / us
 volatile int32_t Encoder_os = 0;
 
 // Encoders
 A1333_t encoder_1 = {
+  .SPIx = SPI3,
+  .CS_Port = GPIOA,
+  .CS_Pin = LL_GPIO_PIN_15,
+  .micros = &(TIM2->CNT),
+};
+A1333_t encoder_2 = {
   .SPIx = SPI1,
   .CS_Port = GPIOD,
   .CS_Pin = LL_GPIO_PIN_2,
@@ -88,9 +86,7 @@ volatile int16_t adc_data[64];
 volatile int16_t adc_os[64] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 // timing stuff
-uint32_t micros = 0, lastMicros = 0;
-float dt_f = 33e-6f; // seconds
-volatile int32_t dt_i = 50; // microseconds
+uint32_t micros = 0;
 
 // CANBus stuff
 volatile uint8_t sendCANBus_flag = 0;
@@ -267,11 +263,14 @@ int main(void)
 
   // enable HRTIM timer A interrupt(FOC calculations)
   LL_HRTIM_EnableIT_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
+
+  LL_mDelay(500);
   resetGateDriver();
 
   TIM2->CNT = 0;
   while (TIM2->CNT < 2000000) {
     micros = TIM2->CNT;
+    A1333_Update(&encoder_1);
     __disable_irq();
     __ASM("nop");
     __ASM("nop");
@@ -279,8 +278,8 @@ int main(void)
     __ASM("nop");
     __ASM("nop");
     FOC->motor_PhysPosition = 0;
-    FOC->TargetCurrent = 5.0f * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 131.0f) * (1.0f - fmin((float)TIM2->CNT * 1e-6f, 1.0f));
-    FOC->TargetFieldWk = 0.0f;
+    FOC->TargetCurrent = 5.0f * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 50.0f) * (1.0f - fmin((float)TIM2->CNT * 1e-6f, 1.0f));
+    FOC->TargetFieldWk = 5.0f;
     FOC->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
     FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
     FOC->V_current = -FOC->U_current - FOC->W_current; // assuming balanced currents
@@ -290,14 +289,6 @@ int main(void)
     __ASM("nop");
     __ASM("nop");
     __enable_irq();
-    SPI_Wait = true;
-    A1333_Update(&encoder_1);
-    uint32_t timeout = micros + 100;
-    while (SPI_Wait) {
-      if (TIM2->CNT >= timeout) {
-        SPI_Wait = false;
-      }
-    }
     while (TIM2->CNT - micros < 31);
   }
   FOC->Encoder_os = encoder_1.angle;
@@ -305,21 +296,11 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  uint32_t counter = 0;
   while (1)
   {
     micros = TIM2->CNT;
-    dt_i = micros - lastMicros;
-    dt_f = dt_i * 1e-6f;
 
-    SPI_Wait = true;
     A1333_Update(&encoder_1);
-    uint32_t timeout = micros + 100;
-    while (SPI_Wait) {
-      if (TIM2->CNT >= timeout) {
-        SPI_Wait = false;
-      }
-    }
 
     // move encoder info to FOC struct
     __disable_irq();
@@ -335,7 +316,7 @@ int main(void)
     FOC->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
     FOC->V_current = -FOC->U_current - FOC->W_current; // assuming balanced currents
     // FOC->TargetCurrent = 1.0f; // for testing
-    FOC->TargetCurrent = 0.1f + (adc_data[7] - adc_os[7]) * 0.01f;
+    FOC->TargetCurrent = 0.3f + (adc_data[7] - adc_os[7]) * 0.01f;
     FOC->TargetFieldWk = 0.0f; // for testing
     // Flush pipeline
     __ASM("nop");
@@ -346,8 +327,6 @@ int main(void)
     __enable_irq();
 
     while (TIM2->CNT - micros < 37);
-    lastMicros = micros;
-    counter++;
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
