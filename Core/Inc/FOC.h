@@ -52,6 +52,9 @@ typedef struct {
     // Output variables
     volatile float duty_u, duty_v, duty_w;
 
+    // Timer definitions
+    uint32_t U_TIMER, V_TIMER, W_TIMER; 
+
     // Pad RAM
     volatile uint32_t pad2[64];
 } FOC_data;

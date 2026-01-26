@@ -11,7 +11,7 @@
 extern void writePwm(uint32_t timer, int32_t duty);
 
 extern volatile int16_t adc_data[64];
-extern volatile int16_t adc_os[3];
+extern volatile int16_t adc_os[64];
 
 extern const float math_LookupX[];
 extern const float sin_LookupY[];
@@ -46,14 +46,14 @@ void FOC_update(volatile FOC_data* self) {
     self->temp_it_next %= N_STEP_ENCODER;
     self->motor_ElecPosition_next = (float)(self->temp_it_next) / (float)N_STEP_ENCODER;
     // motor_ElecPosition = 0.0f;
-    self->sin_elec_position = sinf(self->motor_ElecPosition * PIx2);
-    self->cos_elec_position = cosf(self->motor_ElecPosition * PIx2);
-    self->sin_elec_position_next = sinf(self->motor_ElecPosition_next * PIx2);
-    self->cos_elec_position_next = cosf(self->motor_ElecPosition_next * PIx2);
-    // self->sin_elec_position = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition);
-    // self->cos_elec_position = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition);
-    // self->sin_elec_position_next = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition_next);
-    // self->cos_elec_position_next = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition_next);
+    // self->sin_elec_position = sinf(self->motor_ElecPosition * PIx2);
+    // self->cos_elec_position = cosf(self->motor_ElecPosition * PIx2);
+    // self->sin_elec_position_next = sinf(self->motor_ElecPosition_next * PIx2);
+    // self->cos_elec_position_next = cosf(self->motor_ElecPosition_next * PIx2);
+    self->sin_elec_position = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition);
+    self->cos_elec_position = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition);
+    self->sin_elec_position_next = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition_next);
+    self->cos_elec_position_next = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition_next);
     // self->sin_elec_position = flookupTbll(sin_LookupXl, sin_LookupY, math_LookupSize, self->temp_it);
     // self->cos_elec_position = flookupTbll(sin_LookupXl, cos_LookupY, math_LookupSize, self->temp_it);
     // self->sin_elec_position_next = flookupTbll(sin_LookupXl, sin_LookupY, math_LookupSize, self->temp_it_next);
@@ -92,9 +92,9 @@ void FOC_update(volatile FOC_data* self) {
     self->duty_u = self->cmd_a;
     self->duty_v = (self->cmd_a * -0.5f + 0.8660254037844386f * self->cmd_b);
     self->duty_w = (self->cmd_a * -0.5f - 0.8660254037844386f * self->cmd_b);
-    writePwm(U1_TIMER, self->duty_u * 32000.0f + 32000U);
-    writePwm(V1_TIMER, self->duty_v * 32000.0f + 32000U);
-    writePwm(W1_TIMER, self->duty_w * 32000.0f + 32000U);
+    writePwm(self->U_TIMER, self->duty_u * 32000.0f + 32000U);
+    writePwm(self->V_TIMER, self->duty_v * 32000.0f + 32000U);
+    writePwm(self->W_TIMER, self->duty_w * 32000.0f + 32000U);
 
     // SVPWM generation
     // self->SVPWM_mag = hypotf(self->cmd_b, self->cmd_a);

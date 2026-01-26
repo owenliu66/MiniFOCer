@@ -53,7 +53,7 @@
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-
+extern void disableGateDriver(uint8_t motor);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -64,8 +64,10 @@
 /* External variables --------------------------------------------------------*/
 extern FDCAN_HandleTypeDef hfdcan1;
 /* USER CODE BEGIN EV */
-extern volatile FOC_data* FOC;
+extern volatile FOC_data* FOC1;
+extern volatile FOC_data* FOC2;
 extern A1333_t encoder_1;
+extern A1333_t encoder_2;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -226,10 +228,19 @@ void FDCAN1_IT0_IRQHandler(void)
 void SPI1_IRQHandler(void)
 {
   /* USER CODE BEGIN SPI1_IRQn 0 */
-  
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  A1333_SPI_IRQHandler(&encoder_2);
   /* USER CODE END SPI1_IRQn 0 */
   /* USER CODE BEGIN SPI1_IRQn 1 */
-  
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END SPI1_IRQn 1 */
 }
 
@@ -256,16 +267,54 @@ void SPI3_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles TIM6 global interrupt, DAC1 and DAC3 channel underrun error interrupts.
+  */
+void TIM6_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+  LL_TIM_ClearFlag_UPDATE(TIM6);
+  disableGateDriver(1);
+  /* USER CODE END TIM6_DAC_IRQn 0 */
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+
+  /* USER CODE END TIM6_DAC_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM7 global interrupt, DAC2 and DAC4 channel underrun error interrupts.
+  */
+void TIM7_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM7_DAC_IRQn 0 */
+  LL_TIM_ClearFlag_UPDATE(TIM7);
+  disableGateDriver(2);
+  /* USER CODE END TIM7_DAC_IRQn 0 */
+  /* USER CODE BEGIN TIM7_DAC_IRQn 1 */
+
+  /* USER CODE END TIM7_DAC_IRQn 1 */
+}
+
+/**
   * @brief This function handles HRTIM timer A global interrupt.
   */
 void HRTIM1_TIMA_IRQHandler(void)
 {
   /* USER CODE BEGIN HRTIM1_TIMA_IRQn 0 */
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   LL_HRTIM_ClearFlag_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
-  FOC_update(FOC);
+  FOC_update(FOC1);
+  FOC_update(FOC2);
   /* USER CODE END HRTIM1_TIMA_IRQn 0 */
   /* USER CODE BEGIN HRTIM1_TIMA_IRQn 1 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END HRTIM1_TIMA_IRQn 1 */
 }
 
