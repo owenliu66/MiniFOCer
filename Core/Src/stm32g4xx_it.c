@@ -68,6 +68,7 @@ extern volatile FOC_data* FOC1;
 extern volatile FOC_data* FOC2;
 extern A1333_t encoder_1;
 extern A1333_t encoder_2;
+extern volatile bool wait;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -308,6 +309,7 @@ void HRTIM1_TIMA_IRQHandler(void)
   LL_HRTIM_ClearFlag_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
   FOC_update(FOC1);
   FOC_update(FOC2);
+  wait = false;
   /* USER CODE END HRTIM1_TIMA_IRQn 0 */
   /* USER CODE BEGIN HRTIM1_TIMA_IRQn 1 */
   __ASM("nop");

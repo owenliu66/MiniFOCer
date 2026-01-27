@@ -36,6 +36,7 @@
 #include "FastMath.h"
 #include "FOC.h"
 #include "A1333.h"
+#include "CANBuf.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -110,13 +111,17 @@ volatile int16_t adc_os[64] = {0, 0, 0, 0, 0, 0, 0, 0};
 
 // timing stuff
 uint32_t micros = 0;
-volatile bool wait = false;
+volatile bool wait = true;
 
 // CANBus stuff
 volatile uint8_t sendCANBus_flag = 0;
+CAN_flagBuf CAN_TxBuffer = {0};
 
 // For fun
 bool audio_enable_1 = 0, audio_enable_2 = 0;
+
+// Errors
+uint8_t errors = 0;
 
 /* USER CODE END PV */
 
@@ -332,12 +337,14 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  uint32_t lastCanSendTime = 0;
   while (1)
   {
     micros = TIM2->CNT;
 
-    A1333_Update(&encoder_1);
-    A1333_Update(&encoder_2);
+    // calculate DC bus and gate drive voltage
+    V_bus = adc_data[6] * 0.008f;
+    V_drv = adc_data[4] * 0.008f;
 
     // move encoder info to FOC struct
     __disable_irq();
@@ -346,13 +353,14 @@ int main(void)
     __ASM("nop");
     __ASM("nop");
     __ASM("nop");
+    wait = true;
     FOC1->motor_PhysPosition = encoder_1.angle;
     FOC1->motor_lastMeasTime = encoder_1.sampleTime;
     FOC1->motor_speed = encoder_1.speed;
     FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
     FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
     FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents
-    FOC1->TargetCurrent = TargetCurrent1 + (adc_data[7] - adc_os[7]) * 0.01f;
+    FOC1->TargetCurrent = TargetCurrent1 + audio_enable_1 * (adc_data[7] - adc_os[7]) * 0.01f;
     FOC1->TargetFieldWk = 0.0f; // no field weakening
     FOC2->motor_PhysPosition = encoder_2.angle;
     FOC2->motor_lastMeasTime = encoder_2.sampleTime;
@@ -360,8 +368,9 @@ int main(void)
     FOC2->U_current = (adc_data[0] - adc_os[0]) * 0.040584415584415584f;
     FOC2->W_current = (adc_data[1] - adc_os[1]) * -0.040584415584415584f;
     FOC2->V_current = -FOC2->U_current - FOC2->W_current; // assuming balanced currents
-    FOC2->TargetCurrent = TargetCurrent2 + (adc_data[5] - adc_os[5]) * 0.01f;
+    FOC2->TargetCurrent = TargetCurrent2 + audio_enable_2 * (adc_data[5] - adc_os[5]) * 0.01f;
     FOC2->TargetFieldWk = 0.0f; // no field weakening
+    FOC1->V_bus = V_bus; FOC2->V_bus = V_bus;
     // Flush pipeline
     __ASM("nop");
     __ASM("nop");
@@ -370,10 +379,43 @@ int main(void)
     __ASM("nop");
     __enable_irq();
 
-    V_bus = adc_data[6] * 0.008f;
-    V_drv = adc_data[4] * 0.008f;
+    // trigger rotor angle measurements
+    A1333_Update(&encoder_1);
+    A1333_Update(&encoder_2);
 
-    while (TIM2->CNT - micros < 31);
+    // V_bus UVLO check
+    if (V_bus > UVLO_thresh + UVLO_hyst) {
+      errors &= !ERR_UVP;
+    }
+    else if (V_bus < UVLO_thresh - UVLO_hyst) {
+      errors |= ERR_UVP;
+      disableGateDriver(3);
+    }
+
+    // Motor 1 OCP check
+    if (fabsf(FOC1->U_current) > MaxAbsCurrent || 
+      fabsf(FOC1->V_current) > MaxAbsCurrent || 
+      fabsf(FOC1->W_current) > MaxAbsCurrent) {
+      errors |= ERR_M1_OCP;
+      disableGateDriver(1);
+    }
+    // Motor 2 OCP check
+    if (fabsf(FOC2->U_current) > MaxAbsCurrent || 
+      fabsf(FOC2->V_current) > MaxAbsCurrent || 
+      fabsf(FOC2->W_current) > MaxAbsCurrent) {
+      errors |= ERR_M2_OCP;
+      disableGateDriver(1);
+    }
+
+    if (micros - lastCanSendTime > 20000) {
+      lastCanSendTime = micros;
+      enQueue(&CAN_TxBuffer, CAN_STAT1_ID);
+      enQueue(&CAN_TxBuffer, CAN_STAT2_ID);
+      enQueue(&CAN_TxBuffer, CAN_STAT3_ID);
+    }
+    deQueue(&CAN_TxBuffer, &hfdcan1);
+
+    while (wait && TIM2->CNT - micros < 100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -561,6 +603,7 @@ void measureMotorKv(uint8_t motor){
       while (TIM2->CNT - micros < 31);
     }
     motor_1.kv = encoder_1.speed / V_bus;
+    FOC1->motor_kv = motor_1.kv;
   }
   if ((motor & 0x2) != 0) {
     TIM2->CNT = 0;
@@ -596,6 +639,7 @@ void measureMotorKv(uint8_t motor){
       while (TIM2->CNT - micros < 31);
     }
     motor_2.kv = encoder_2.speed / V_bus;
+    FOC2->motor_kv = motor_2.kv;
   }
 }
 
@@ -615,7 +659,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       TargetCurrent1 = AC_current_raw[0] * 0.01f;
       TargetCurrent2 = AC_current_raw[1] * 0.01f;
       // Drive enable 2
-      if ((RxData[4] & 0x1) != 0) {
+      if ((RxData[4] & 0x1) != 0 && (errors & !ERR_M1_OCP) == 0) {
         resetGateDriver(2);
         LL_TIM_SetCounter(TIM7, 0); // reset drive-enable timeout counter
       }
@@ -623,7 +667,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
         disableGateDriver(2);
       }
       // Drive enable 1
-      if ((RxData[4] & 0x2) != 0) {
+      if ((RxData[4] & 0x2) != 0 && (errors & !ERR_M2_OCP) == 0) {
         resetGateDriver(1);
         LL_TIM_SetCounter(TIM6, 0); // reset drive-enable timeout counter
       }
@@ -664,18 +708,19 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       FOC2->Encoder_os = motor_2.encoder_os;
       motor_1.kv = RxData[4] * 1.6666666666666667e-7f * N_STEP_ENCODER;
       motor_2.kv = RxData[5] * 1.6666666666666667e-7f * N_STEP_ENCODER;
+      FOC1->motor_kv = motor_1.kv;
+      FOC2->motor_kv = motor_2.kv;
       TargetCurrent1 = RxData[6] * 0.1f;
       TargetCurrent2 = RxData[7] * 0.1f;
       if (RxData[6] > 0) {
         measureEncoderOs(1);
         measureMotorKv(1);
-        FOC1->motor_kv = motor_1.kv;
       }
       if (RxData[7] > 0) {
         measureEncoderOs(2);
         measureMotorKv(2);
-        FOC2->motor_kv = motor_2.kv;
       }
+      enQueue(&CAN_TxBuffer, CAN_RDBK_ID);
     }
   }
 }

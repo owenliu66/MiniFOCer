@@ -45,6 +45,10 @@
 #define CAN_RDBK_ID 0x801602UL
 #define CAN_DEBUG_ID 0x100008UL
 
+// Error masks
+#define ERR_M1_OCP 0x04U
+#define ERR_M2_OCP 0x02U
+#define ERR_UVP 0x01U
 
 // ========== Macros ==========
 #define DELAY_US(us) \
