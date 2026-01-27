@@ -74,14 +74,14 @@ volatile FOC_data* FOC2;
 float TargetCurrent1 = 0, TargetCurrent2 = 0;
 float MaxCurrent = 10, MaxAbsCurrent = 20;
 motor_t motor_1 = {
-  .Ind = 100e-6,
-  .Res = 0.1,
+  .Ind = 160e-6,
+  .Res = 0.062,
   .kv = 360,
   .n_poles = 7,
 };
 motor_t motor_2 = {
-  .Ind = 100e-6,
-  .Res = 0.1,
+  .Ind = 160e-6,
+  .Res = 0.062,
   .kv = 360,
   .n_poles = 7,
 };
@@ -127,7 +127,7 @@ void resetGateDriver(uint8_t motor);
 void disableGateDriver(uint8_t motor);
 void writePwm(uint32_t timer, int32_t duty);
 void measureEncoderOs(uint8_t motor);
-void measureMotorKV(uint8_t motor);
+void measureMotorKv(uint8_t motor);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -259,8 +259,6 @@ int main(void)
   TxHeader.TxFrameType = FDCAN_DATA_FRAME;
 
   // initialize FOC variables
-  FOC1->Kp_Id = 0.1f; FOC1->Ki_Id = 100.0f;
-  FOC1->Kp_Iq = 0.1f; FOC1->Ki_Iq = 100.0f;
   FOC1->integ_d = 0.0f;
   FOC1->integ_q = 0.0f;
   FOC1->motor_speed = 0.0f;
@@ -269,8 +267,7 @@ int main(void)
   FOC1->U_TIMER = U1_TIMER;
   FOC1->V_TIMER = V1_TIMER;
   FOC1->W_TIMER = W1_TIMER;
-  FOC2->Kp_Id = 0.1f; FOC2->Ki_Id = 100.0f;
-  FOC2->Kp_Iq = 0.1f; FOC2->Ki_Iq = 100.0f;
+  FOC1->motor_kv = 0.1911f; FOC1->V_bus = 14.8f;
   FOC2->integ_d = 0.0f;
   FOC2->integ_q = 0.0f;
   FOC2->motor_speed = 0.0f;
@@ -279,6 +276,15 @@ int main(void)
   FOC2->U_TIMER = U2_TIMER;
   FOC2->V_TIMER = V2_TIMER;
   FOC2->W_TIMER = W2_TIMER;
+  FOC2->motor_kv = 0.1911f; FOC2->V_bus = 14.8f;
+  FOC1->Kp_Iq = (80000 >> FOC1->F_sw) * motor_1.Ind / V_bus;
+  FOC1->Ki_Iq = (80000 >> FOC1->F_sw) * motor_1.Res / V_bus;
+  FOC2->Kp_Iq = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
+  FOC2->Ki_Iq = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
+  FOC1->Kp_Id = (80000 >> FOC1->F_sw) * motor_1.Ind / V_bus;
+  FOC1->Ki_Id = (80000 >> FOC1->F_sw) * motor_1.Res / V_bus;
+  FOC2->Kp_Id = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
+  FOC2->Ki_Id = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
 
   // measure ADC offset
   for (uint16_t i = 0; i < 100; i++){
@@ -320,6 +326,8 @@ int main(void)
 
   LL_mDelay(500);
   resetGateDriver(3);
+  measureEncoderOs(3);
+  measureMotorKv(3);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -640,23 +648,33 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       motor_2.Ind = RxData[3] * 1e-6f;
       motor_1.n_poles = RxData[4];
       motor_2.n_poles = RxData[5];
+      FOC1->Kp_Iq = (80000 >> FOC1->F_sw) * motor_1.Ind / V_bus;
+      FOC1->Ki_Iq = (80000 >> FOC1->F_sw) * motor_1.Res / V_bus;
+      FOC2->Kp_Iq = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
+      FOC2->Ki_Iq = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
+      FOC1->Kp_Id = (80000 >> FOC1->F_sw) * motor_1.Ind / V_bus;
+      FOC1->Ki_Id = (80000 >> FOC1->F_sw) * motor_1.Res / V_bus;
+      FOC2->Kp_Id = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
+      FOC2->Ki_Id = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
     }
     else if (RxHeader.Identifier == CAN_SETUP2_ID) {
       memcpy(&motor_1.encoder_os, &RxData[0], 2);
       memcpy(&motor_2.encoder_os, &RxData[2], 2);
       FOC1->Encoder_os = motor_1.encoder_os;
       FOC2->Encoder_os = motor_2.encoder_os;
-      motor_1.kv = RxData[4];
-      motor_2.kv = RxData[5];
+      motor_1.kv = RxData[4] * 1.6666666666666667e-7f * N_STEP_ENCODER;
+      motor_2.kv = RxData[5] * 1.6666666666666667e-7f * N_STEP_ENCODER;
       TargetCurrent1 = RxData[6] * 0.1f;
       TargetCurrent2 = RxData[7] * 0.1f;
       if (RxData[6] > 0) {
         measureEncoderOs(1);
         measureMotorKv(1);
+        FOC1->motor_kv = motor_1.kv;
       }
       if (RxData[7] > 0) {
         measureEncoderOs(2);
         measureMotorKv(2);
+        FOC2->motor_kv = motor_2.kv;
       }
     }
   }

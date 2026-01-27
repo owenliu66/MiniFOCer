@@ -20,13 +20,15 @@ typedef struct {
     volatile uint32_t pad1[64];
 
     // Physical variables
-    volatile float U_current, V_current, W_current;
-    volatile float motor_speed;
-    volatile uint32_t F_sw;
+    volatile float U_current, V_current, W_current; // Amp
+    volatile float motor_speed; // LSB/us
+    volatile uint32_t F_sw; // timer frequency division power
     volatile int32_t motor_PhysPosition;
     volatile float motor_ElecPosition, motor_ElecPosition_next;
     volatile int32_t Encoder_os;
-    volatile uint32_t motor_lastMeasTime;
+    volatile uint32_t motor_lastMeasTime; // us
+    volatile float motor_kv; // LSB/us/Volt
+    volatile float V_bus; // Volt
 
     volatile int32_t temp_it, temp_it_next;
     volatile float sin_elec_position, cos_elec_position;

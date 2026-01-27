@@ -80,7 +80,7 @@ void FOC_update(volatile FOC_data* self) {
     self->integ_q += self->I_q_err * self->Ki_Iq * 25e-6f * ((float)(1U << self->F_sw));
     self->integ_q = (self->integ_q > MAX_CMD_Q) ? MAX_CMD_Q : self->integ_q;
     self->integ_q = (self->integ_q < MIN_CMD_Q) ? MIN_CMD_Q : self->integ_q;
-    self->cmd_q = self->I_q_err * self->Kp_Iq + self->integ_q;
+    self->cmd_q = self->I_q_err * self->Kp_Iq + self->integ_q + self->motor_speed / self->motor_kv / self->V_bus;
 
     // self->cmd_d = 0.0f;
     // self->cmd_q = 0.1f;
