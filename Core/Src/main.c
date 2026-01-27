@@ -131,8 +131,8 @@ void SystemClock_Config(void);
 void resetGateDriver(uint8_t motor);
 void disableGateDriver(uint8_t motor);
 void writePwm(uint32_t timer, int32_t duty);
-void measureEncoderOs(uint8_t motor);
-void measureMotorKv(uint8_t motor);
+void measureEncoderOs(uint8_t motor, float TestCurrent);
+void measureMotorKv(uint8_t motor, float TestCurrent);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -497,7 +497,7 @@ void writePwm(uint32_t timer, int32_t duty){
   LL_HRTIM_TIM_SetCompare3(HRTIM1, timer, duty);
 }
 
-void measureEncoderOs(uint8_t motor){
+void measureEncoderOs(uint8_t motor, float TestCurrent){
   if ((motor & 0x1) != 0) {
     uint16_t count = 0;
     uint32_t sum = 0;
@@ -512,8 +512,8 @@ void measureEncoderOs(uint8_t motor){
       __ASM("nop");
       __ASM("nop");
       FOC1->motor_PhysPosition = 0;
-      FOC1->TargetCurrent = TargetCurrent1 * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 5.0f);
-      FOC1->TargetFieldWk = TargetCurrent1;
+      FOC1->TargetCurrent = TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 5.0f);
+      FOC1->TargetFieldWk = TestCurrent;
       FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
       FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
       FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents
@@ -546,8 +546,8 @@ void measureEncoderOs(uint8_t motor){
       __ASM("nop");
       __ASM("nop");
       FOC2->motor_PhysPosition = 0;
-      FOC2->TargetCurrent = TargetCurrent2 * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 5.0f);
-      FOC2->TargetFieldWk = TargetCurrent2;
+      FOC2->TargetCurrent = TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 5.0f);
+      FOC2->TargetFieldWk = TestCurrent;
       FOC2->U_current = (adc_data[0] - adc_os[0]) * 0.040584415584415584f;
       FOC2->W_current = (adc_data[1] - adc_os[1]) * -0.040584415584415584f;
       FOC2->V_current = -FOC2->U_current - FOC2->W_current; // assuming balanced currents
@@ -568,7 +568,7 @@ void measureEncoderOs(uint8_t motor){
   }
 }
 
-void measureMotorKv(uint8_t motor){
+void measureMotorKv(uint8_t motor, float TestCurrent){
   if ((motor & 0x1) != 0) {
     TIM2->CNT = 0;
     float speed = 0;
@@ -590,7 +590,7 @@ void measureMotorKv(uint8_t motor){
       FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
       FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
       FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents
-      FOC1->TargetCurrent = TargetCurrent1;
+      FOC1->TargetCurrent = TestCurrent;
       FOC1->TargetFieldWk = 0.0f; // no field weakening
       // Flush pipeline
       __ASM("nop");
@@ -626,7 +626,7 @@ void measureMotorKv(uint8_t motor){
       FOC2->U_current = (adc_data[0] - adc_os[1]) * 0.040584415584415584f;
       FOC2->W_current = (adc_data[0] - adc_os[1]) * -0.040584415584415584f;
       FOC2->V_current = -FOC2->U_current - FOC2->W_current; // assuming balanced currents
-      FOC2->TargetCurrent = TargetCurrent2;
+      FOC2->TargetCurrent = TestCurrent;
       FOC2->TargetFieldWk = 0.0f; // no field weakening
       // Flush pipeline
       __ASM("nop");
@@ -710,15 +710,15 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       motor_2.kv = RxData[5] * 1.6666666666666667e-7f * N_STEP_ENCODER;
       FOC1->motor_kv = motor_1.kv;
       FOC2->motor_kv = motor_2.kv;
-      TargetCurrent1 = RxData[6] * 0.1f;
-      TargetCurrent2 = RxData[7] * 0.1f;
+      float TestCurrent1 = RxData[6] * 0.1f;
+      float TestCurrent2 = RxData[7] * 0.1f;
       if (RxData[6] > 0) {
-        measureEncoderOs(1);
-        measureMotorKv(1);
+        measureEncoderOs(1, TestCurrent1);
+        measureMotorKv(1, TestCurrent1);
       }
       if (RxData[7] > 0) {
-        measureEncoderOs(2);
-        measureMotorKv(2);
+        measureEncoderOs(2, TestCurrent2);
+        measureMotorKv(2, TestCurrent2);
       }
       enQueue(&CAN_TxBuffer, CAN_RDBK_ID);
     }
