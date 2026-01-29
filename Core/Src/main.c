@@ -72,7 +72,7 @@ volatile FOC_data* FOC1;
 volatile FOC_data* FOC2;
 
 // Motor variables
-float TargetCurrent1 = 0, TargetCurrent2 = 0;
+float TargetCurrent1 = 1, TargetCurrent2 = 1;
 float MaxCurrent = 10, MaxAbsCurrent = 20;
 motor_t motor_1 = {
   .Ind = 160e-6,
@@ -118,7 +118,7 @@ volatile uint8_t sendCANBus_flag = 0;
 CAN_flagBuf CAN_TxBuffer = {0};
 
 // For fun
-bool audio_enable_1 = 0, audio_enable_2 = 0;
+bool audio_enable_1 = true, audio_enable_2 = true;
 
 // Errors
 uint8_t errors = 0;
@@ -148,7 +148,8 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  // SystemClock_Config();
+  // LL_mDelay(1000);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -329,10 +330,10 @@ int main(void)
   // enable HRTIM timer A interrupt(FOC calculations)
   LL_HRTIM_EnableIT_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
 
-  LL_mDelay(500);
+  // LL_mDelay(500);
   resetGateDriver(3);
-  measureEncoderOs(3);
-  measureMotorKv(3);
+  measureEncoderOs(3, 5);
+  measureMotorKv(3, 5);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -341,6 +342,7 @@ int main(void)
   while (1)
   {
     micros = TIM2->CNT;
+    HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData);
 
     // calculate DC bus and gate drive voltage
     V_bus = adc_data[6] * 0.008f;
@@ -740,8 +742,7 @@ void Error_Handler(void)
   }
   /* USER CODE END Error_Handler_Debug */
 }
-
-#ifdef  USE_FULL_ASSERT
+#ifdef USE_FULL_ASSERT
 /**
   * @brief  Reports the name of the source file and the source line number
   *         where the assert_param error has occurred.

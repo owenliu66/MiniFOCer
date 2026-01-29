@@ -7,7 +7,7 @@
         {
             "name": "Cortex Debug",
             "cwd": "${workspaceFolder}",
-            "executable": "./build/Debug/${workspaceFolderBasename}.elf",
+            "executable": "./build/Debug/MiniFOCer.elf",
             "request": "launch",
             "type": "cortex-debug",
             "runToEntryPoint": "main",
