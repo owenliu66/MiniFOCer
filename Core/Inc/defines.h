@@ -26,6 +26,7 @@
 #define N_STEP_ENCODER 32768
 #define N_POLES 7
 #define MAX_SPEED 6000.0f/60.0f*1e-6f*N_STEP_ENCODER
+#define MAX_SPEED_RECOV 5900.0f/60.0f*1e-6f*N_STEP_ENCODER
 
 // FOC constants
 #define MAX_CMD_D 0.5f

@@ -36,8 +36,8 @@ void FOC_update(volatile FOC_data* self) {
     // compensate for the time delay if motor speed is high
     // if (fabsf(self->motor_speed) > ((300.0f/60.0f)*1e-6f*N_STEP_ENCODER * 0.02f)){
     //     uint32_t TIM2_CNT = TIM2->CNT;
-    //     self->temp_it      += ((int32_t)((TIM2_CNT - self->motor_lastMeasTime)) + (int32_t)(0UL << self->F_sw)) * (int32_t)(self->motor_speed);
-    //     self->temp_it_next += ((int32_t)((TIM2_CNT - self->motor_lastMeasTime)) + (int32_t)(19UL << self->F_sw)) * (int32_t)(self->motor_speed);
+    //     self->temp_it      -= ((int32_t)((TIM2_CNT - self->motor_lastMeasTime)) + (int32_t)(0UL << self->F_sw)) * (int32_t)(self->motor_speed);
+    //     self->temp_it_next -= ((int32_t)((TIM2_CNT - self->motor_lastMeasTime)) + (int32_t)(19UL << self->F_sw)) * (int32_t)(self->motor_speed);
     // }
     self->temp_it *= N_POLES;
     self->temp_it %= N_STEP_ENCODER;
@@ -46,14 +46,14 @@ void FOC_update(volatile FOC_data* self) {
     self->temp_it_next %= N_STEP_ENCODER;
     self->motor_ElecPosition_next = (float)(self->temp_it_next) / (float)N_STEP_ENCODER;
     // motor_ElecPosition = 0.0f;
-    // self->sin_elec_position = sinf(self->motor_ElecPosition * PIx2);
-    // self->cos_elec_position = cosf(self->motor_ElecPosition * PIx2);
-    // self->sin_elec_position_next = sinf(self->motor_ElecPosition_next * PIx2);
-    // self->cos_elec_position_next = cosf(self->motor_ElecPosition_next * PIx2);
-    self->sin_elec_position = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition);
-    self->cos_elec_position = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition);
-    self->sin_elec_position_next = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition_next);
-    self->cos_elec_position_next = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition_next);
+    self->sin_elec_position = sinf(self->motor_ElecPosition * PIx2);
+    self->cos_elec_position = cosf(self->motor_ElecPosition * PIx2);
+    self->sin_elec_position_next = sinf(self->motor_ElecPosition_next * PIx2);
+    self->cos_elec_position_next = cosf(self->motor_ElecPosition_next * PIx2);
+    // self->sin_elec_position = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition);
+    // self->cos_elec_position = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition);
+    // self->sin_elec_position_next = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition_next);
+    // self->cos_elec_position_next = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition_next);
     // self->sin_elec_position = flookupTbll(sin_LookupXl, sin_LookupY, math_LookupSize, self->temp_it);
     // self->cos_elec_position = flookupTbll(sin_LookupXl, cos_LookupY, math_LookupSize, self->temp_it);
     // self->sin_elec_position_next = flookupTbll(sin_LookupXl, sin_LookupY, math_LookupSize, self->temp_it_next);
@@ -67,12 +67,13 @@ void FOC_update(volatile FOC_data* self) {
     self->I_d_avg += (self->I_d - self->I_d_avg) * 0.001f;
     self->I_q_avg += (self->I_q - self->I_q_avg) * 0.001f;
     
-    float RpmSafetyMult = (fabsf(self->motor_speed) > MAX_SPEED) ? 0.0f : 1.0f;
+    // Rev limiter
+    if (fabsf(self->motor_speed) > MAX_SPEED) self->isOverRev = 1;
+    else if (fabsf(self->motor_speed) < MAX_SPEED_RECOV) self->isOverRev = 0;
 
-    // RpmSafetyMult = 1.0f;
     // PI controllers on Q and D
     self->I_d_err = self->TargetFieldWk - self->I_d;
-    self->I_q_err = self->TargetCurrent * RpmSafetyMult - self->I_q;
+    self->I_q_err = self->TargetCurrent * ((self->isOverRev)? 0.0f : 1.0f) - self->I_q;
     self->integ_d += self->I_d_err * self->Ki_Id * 25e-6f * ((float)(1U << self->F_sw));
     self->integ_d = (self->integ_d > MAX_CMD_D) ? MAX_CMD_D : self->integ_d;
     self->integ_d = (self->integ_d < MIN_CMD_D) ? MIN_CMD_D : self->integ_d;
@@ -80,7 +81,7 @@ void FOC_update(volatile FOC_data* self) {
     self->integ_q += self->I_q_err * self->Ki_Iq * 25e-6f * ((float)(1U << self->F_sw));
     self->integ_q = (self->integ_q > MAX_CMD_Q) ? MAX_CMD_Q : self->integ_q;
     self->integ_q = (self->integ_q < MIN_CMD_Q) ? MIN_CMD_Q : self->integ_q;
-    self->cmd_q = self->I_q_err * self->Kp_Iq + self->integ_q + self->motor_speed / self->motor_kv / self->V_bus;
+    self->cmd_q = self->I_q_err * self->Kp_Iq + self->integ_q;// + self->motor_speed / self->motor_kv / self->V_bus;
 
     // self->cmd_d = 0.0f;
     // self->cmd_q = 0.1f;

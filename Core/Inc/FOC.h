@@ -43,6 +43,7 @@ typedef struct {
     volatile float I_d_err, I_q_err;
     volatile float TargetCurrent;
     volatile float TargetFieldWk;
+    volatile uint8_t isOverRev;
 
     // SVPWM variables
     volatile uint8_t SVPWM_sector;

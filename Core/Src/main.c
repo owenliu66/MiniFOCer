@@ -72,8 +72,8 @@ volatile FOC_data* FOC1;
 volatile FOC_data* FOC2;
 
 // Motor variables
-float TargetCurrent1 = 1, TargetCurrent2 = 1;
-float MaxCurrent = 10, MaxAbsCurrent = 20;
+float TargetCurrent1 = 5.0f, TargetCurrent2 = 5.0f;
+float MaxCurrent = 10.0f, MaxAbsCurrent = 40.0f;
 motor_t motor_1 = {
   .Ind = 160e-6,
   .Res = 0.062,
@@ -206,10 +206,10 @@ int main(void)
   LL_TIM_EnableCounter(TIM2);
 
   // Enable drive-enable timeout counters
-  LL_TIM_EnableIT_UPDATE(TIM6);
-  LL_TIM_EnableCounter(TIM6);
-  LL_TIM_EnableIT_UPDATE(TIM7);
-  LL_TIM_EnableCounter(TIM7);
+  // LL_TIM_EnableIT_UPDATE(TIM6);
+  // LL_TIM_EnableCounter(TIM6);
+  // LL_TIM_EnableIT_UPDATE(TIM7);
+  // LL_TIM_EnableCounter(TIM7);
 
   // Encoder setup
   A1333_Init(&encoder_1);
@@ -283,14 +283,14 @@ int main(void)
   FOC2->V_TIMER = V2_TIMER;
   FOC2->W_TIMER = W2_TIMER;
   FOC2->motor_kv = 0.1911f; FOC2->V_bus = 14.8f;
-  FOC1->Kp_Iq = (80000 >> FOC1->F_sw) * motor_1.Ind / V_bus;
-  FOC1->Ki_Iq = (80000 >> FOC1->F_sw) * motor_1.Res / V_bus;
-  FOC2->Kp_Iq = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
-  FOC2->Ki_Iq = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
-  FOC1->Kp_Id = (80000 >> FOC1->F_sw) * motor_1.Ind / V_bus;
-  FOC1->Ki_Id = (80000 >> FOC1->F_sw) * motor_1.Res / V_bus;
-  FOC2->Kp_Id = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
-  FOC2->Ki_Id = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
+  FOC1->Kp_Iq = 0.1f;
+  FOC1->Ki_Iq = 100.0f;
+  FOC2->Kp_Iq = 0.1f;
+  FOC2->Ki_Iq = 100.0f;
+  FOC1->Kp_Id = 0.1f;
+  FOC1->Ki_Id = 100.0f;
+  FOC2->Kp_Id = 0.1f;
+  FOC2->Ki_Id = 100.0f;
 
   // measure ADC offset
   for (uint16_t i = 0; i < 100; i++){
@@ -331,9 +331,9 @@ int main(void)
   LL_HRTIM_EnableIT_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
 
   // LL_mDelay(500);
+  measureEncoderOs(3, 1);
+  // measureMotorKv(3, 10);
   resetGateDriver(3);
-  measureEncoderOs(3, 5);
-  measureMotorKv(3, 5);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -406,7 +406,7 @@ int main(void)
       fabsf(FOC2->V_current) > MaxAbsCurrent || 
       fabsf(FOC2->W_current) > MaxAbsCurrent) {
       errors |= ERR_M2_OCP;
-      disableGateDriver(1);
+      disableGateDriver(2);
     }
 
     if (micros - lastCanSendTime > 20000) {
@@ -417,7 +417,7 @@ int main(void)
     }
     deQueue(&CAN_TxBuffer, &hfdcan1);
 
-    while (wait && TIM2->CNT - micros < 100);
+    while (wait && TIM2->CNT - micros < 50);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -501,8 +501,8 @@ void writePwm(uint32_t timer, int32_t duty){
 
 void measureEncoderOs(uint8_t motor, float TestCurrent){
   if ((motor & 0x1) != 0) {
-    uint16_t count = 0;
-    uint32_t sum = 0;
+    disableGateDriver(2);
+    resetGateDriver(1);
     TIM2->CNT = 0;
     while (TIM2->CNT < 2000000) {
       micros = TIM2->CNT;
@@ -514,8 +514,9 @@ void measureEncoderOs(uint8_t motor, float TestCurrent){
       __ASM("nop");
       __ASM("nop");
       FOC1->motor_PhysPosition = 0;
-      FOC1->TargetCurrent = TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 5.0f);
-      FOC1->TargetFieldWk = TestCurrent;
+      FOC1->TargetCurrent = TestCurrent;
+      FOC1->TargetFieldWk = TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 10.0f) * (1.0f - fmin((float)TIM2->CNT * 1e-6f, 1.0f));
+      FOC1->motor_speed = 0;
       FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
       FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
       FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents
@@ -526,15 +527,13 @@ void measureEncoderOs(uint8_t motor, float TestCurrent){
       __ASM("nop");
       __enable_irq();
       while (TIM2->CNT - micros < 31);
-      if (TIM2->CNT > 1000000) {
-        count++;
-        sum += encoder_1.angle;
-      }
     }
-    motor_1.encoder_os = sum / count;
-    FOC1->Encoder_os = motor_1.encoder_os;
+    motor_1.encoder_os = encoder_1.angle;//sum / count;
+    FOC1->Encoder_os = encoder_1.angle;//motor_1.encoder_os;
   }
   if ((motor & 0x2) != 0){
+    disableGateDriver(1);
+    resetGateDriver(2);
     uint16_t count = 0;
     uint32_t sum = 0;
     TIM2->CNT = 0;
@@ -548,8 +547,9 @@ void measureEncoderOs(uint8_t motor, float TestCurrent){
       __ASM("nop");
       __ASM("nop");
       FOC2->motor_PhysPosition = 0;
-      FOC2->TargetCurrent = TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 5.0f);
-      FOC2->TargetFieldWk = TestCurrent;
+      FOC2->TargetCurrent = TestCurrent;//TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 1.0f);
+      FOC2->TargetFieldWk = TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 10.0f) * (1.0f - fmin((float)TIM2->CNT * 1e-6f, 1.0f));
+      FOC2->motor_speed = 0;
       FOC2->U_current = (adc_data[0] - adc_os[0]) * 0.040584415584415584f;
       FOC2->W_current = (adc_data[1] - adc_os[1]) * -0.040584415584415584f;
       FOC2->V_current = -FOC2->U_current - FOC2->W_current; // assuming balanced currents
@@ -562,19 +562,22 @@ void measureEncoderOs(uint8_t motor, float TestCurrent){
       while (TIM2->CNT - micros < 31);
       if (TIM2->CNT > 1000000) {
         count++;
-        sum += encoder_1.angle;
+        sum += encoder_2.angle;
       }
     }
-    motor_2.encoder_os = sum / count;
-    FOC2->Encoder_os = motor_2.encoder_os;
+    motor_2.encoder_os = encoder_2.angle;//sum / count;
+    FOC2->Encoder_os = encoder_2.angle;//motor_2.encoder_os;
   }
+  disableGateDriver(3);
 }
 
 void measureMotorKv(uint8_t motor, float TestCurrent){
   if ((motor & 0x1) != 0) {
+    disableGateDriver(2);
+    resetGateDriver(1);
     TIM2->CNT = 0;
     float speed = 0;
-    while (TIM2->CNT < 1000000 || fabsf(encoder_1.speed - speed) > 0.1f) {
+    while (TIM2->CNT < 1000000 || fabsf(encoder_1.speed - speed) > 0.01f) {
       micros = TIM2->CNT;
       speed = encoder_1.speed;
       A1333_Update(&encoder_1);
@@ -608,9 +611,11 @@ void measureMotorKv(uint8_t motor, float TestCurrent){
     FOC1->motor_kv = motor_1.kv;
   }
   if ((motor & 0x2) != 0) {
+    disableGateDriver(1);
+    resetGateDriver(2);
     TIM2->CNT = 0;
     float speed = 0;
-    while (TIM2->CNT < 1000000 || fabsf(encoder_2.speed - speed) > 0.1f) {
+    while (TIM2->CNT < 1000000 || fabsf(encoder_2.speed - speed) > 0.01f) {
       micros = TIM2->CNT;
       speed = encoder_2.speed;
       A1333_Update(&encoder_2);
@@ -643,6 +648,7 @@ void measureMotorKv(uint8_t motor, float TestCurrent){
     motor_2.kv = encoder_2.speed / V_bus;
     FOC2->motor_kv = motor_2.kv;
   }
+  disableGateDriver(3);
 }
 
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
