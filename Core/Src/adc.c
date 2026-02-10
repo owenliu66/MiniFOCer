@@ -313,7 +313,7 @@ void MX_ADC3_Init(void)
   ADC_REG_InitStruct.SequencerLength = LL_ADC_REG_SEQ_SCAN_ENABLE_3RANKS;
   ADC_REG_InitStruct.SequencerDiscont = LL_ADC_REG_SEQ_DISCONT_DISABLE;
   ADC_REG_InitStruct.ContinuousMode = LL_ADC_REG_CONV_CONTINUOUS;
-  ADC_REG_InitStruct.DMATransfer = LL_ADC_REG_DMA_TRANSFER_LIMITED;
+  ADC_REG_InitStruct.DMATransfer = LL_ADC_REG_DMA_TRANSFER_UNLIMITED;
   ADC_REG_InitStruct.Overrun = LL_ADC_REG_OVR_DATA_PRESERVED;
   LL_ADC_REG_Init(ADC3, &ADC_REG_InitStruct);
   LL_ADC_SetGainCompensation(ADC3, 0);
@@ -342,7 +342,7 @@ void MX_ADC3_Init(void)
   /** Configure Regular Channel
   */
   LL_ADC_REG_SetSequencerRanks(ADC3, LL_ADC_REG_RANK_1, LL_ADC_CHANNEL_1);
-  LL_ADC_SetChannelSamplingTime(ADC3, LL_ADC_CHANNEL_1, LL_ADC_SAMPLINGTIME_47CYCLES_5);
+  LL_ADC_SetChannelSamplingTime(ADC3, LL_ADC_CHANNEL_1, LL_ADC_SAMPLINGTIME_640CYCLES_5);
   LL_ADC_SetChannelSingleDiff(ADC3, LL_ADC_CHANNEL_1, LL_ADC_SINGLE_ENDED);
 
   /** Configure Regular Channel
@@ -354,7 +354,7 @@ void MX_ADC3_Init(void)
   /** Configure Regular Channel
   */
   LL_ADC_REG_SetSequencerRanks(ADC3, LL_ADC_REG_RANK_3, LL_ADC_CHANNEL_12);
-  LL_ADC_SetChannelSamplingTime(ADC3, LL_ADC_CHANNEL_12, LL_ADC_SAMPLINGTIME_47CYCLES_5);
+  LL_ADC_SetChannelSamplingTime(ADC3, LL_ADC_CHANNEL_12, LL_ADC_SAMPLINGTIME_640CYCLES_5);
   LL_ADC_SetChannelSingleDiff(ADC3, LL_ADC_CHANNEL_12, LL_ADC_SINGLE_ENDED);
   /* USER CODE BEGIN ADC3_Init 2 */
   LL_ADC_StartCalibration(ADC3, LL_ADC_SINGLE_ENDED);
@@ -448,7 +448,7 @@ void MX_ADC4_Init(void)
   /** Configure Regular Channel
   */
   LL_ADC_REG_SetSequencerRanks(ADC4, LL_ADC_REG_RANK_1, LL_ADC_CHANNEL_4);
-  LL_ADC_SetChannelSamplingTime(ADC4, LL_ADC_CHANNEL_4, LL_ADC_SAMPLINGTIME_640CYCLES_5);
+  LL_ADC_SetChannelSamplingTime(ADC4, LL_ADC_CHANNEL_4, LL_ADC_SAMPLINGTIME_92CYCLES_5);
   LL_ADC_SetChannelSingleDiff(ADC4, LL_ADC_CHANNEL_4, LL_ADC_SINGLE_ENDED);
   /* USER CODE BEGIN ADC4_Init 2 */
   LL_ADC_StartCalibration(ADC4, LL_ADC_SINGLE_ENDED);

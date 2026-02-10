@@ -49,7 +49,7 @@ void MX_FDCAN1_Init(void)
   hfdcan1.Init.NominalTimeSeg1 = 23;
   hfdcan1.Init.NominalTimeSeg2 = 8;
   hfdcan1.Init.DataPrescaler = 1;
-  hfdcan1.Init.DataSyncJumpWidth = 7;
+  hfdcan1.Init.DataSyncJumpWidth = 1;
   hfdcan1.Init.DataTimeSeg1 = 23;
   hfdcan1.Init.DataTimeSeg2 = 8;
   hfdcan1.Init.StdFiltersNbr = 0;

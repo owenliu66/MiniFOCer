@@ -21,11 +21,12 @@ void enQueue(CAN_flagBuf* buf, uint32_t id) {
 }
 
 void deQueue(CAN_flagBuf* buf, FDCAN_HandleTypeDef* instance) {
-    if (buf->top > buf->bot) {
+    if (buf->top != buf->bot) {
         uint16_t data_u16[4];
         int16_t data_i16[4];
         TxHeader.Identifier = buf->id_buf[buf->bot];
-        switch (buf->id_buf[buf->bot])
+        buf->bot++;
+        switch (TxHeader.Identifier)
         {
         case CAN_STAT1_ID:
             data_i16[0] = FOC1->I_q_avg * 100.0f;
@@ -65,6 +66,5 @@ void deQueue(CAN_flagBuf* buf, FDCAN_HandleTypeDef* instance) {
         default:
             break;
         }
-        buf->bot++;
     }
 }

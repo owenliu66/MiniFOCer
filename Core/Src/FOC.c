@@ -41,19 +41,21 @@ void FOC_update(volatile FOC_data* self) {
     // }
     self->temp_it *= N_POLES;
     self->temp_it %= N_STEP_ENCODER;
+    if (self->temp_it < 0) self->temp_it += N_STEP_ENCODER;
     self->motor_ElecPosition = (float)(self->temp_it) / (float)N_STEP_ENCODER;
     self->temp_it_next *= N_POLES;
     self->temp_it_next %= N_STEP_ENCODER;
+    if (self->temp_it_next < 0) self->temp_it_next += N_STEP_ENCODER;
     self->motor_ElecPosition_next = (float)(self->temp_it_next) / (float)N_STEP_ENCODER;
     // motor_ElecPosition = 0.0f;
-    self->sin_elec_position = sinf(self->motor_ElecPosition * PIx2);
-    self->cos_elec_position = cosf(self->motor_ElecPosition * PIx2);
-    self->sin_elec_position_next = sinf(self->motor_ElecPosition_next * PIx2);
-    self->cos_elec_position_next = cosf(self->motor_ElecPosition_next * PIx2);
-    // self->sin_elec_position = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition);
-    // self->cos_elec_position = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition);
-    // self->sin_elec_position_next = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition_next);
-    // self->cos_elec_position_next = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition_next);
+    // self->sin_elec_position = sinf(self->motor_ElecPosition * PIx2);
+    // self->cos_elec_position = cosf(self->motor_ElecPosition * PIx2);
+    // self->sin_elec_position_next = sinf(self->motor_ElecPosition_next * PIx2);
+    // self->cos_elec_position_next = cosf(self->motor_ElecPosition_next * PIx2);
+    self->sin_elec_position = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition);
+    self->cos_elec_position = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition);
+    self->sin_elec_position_next = lookupTblf(math_LookupX, sin_LookupY, math_LookupSize, self->motor_ElecPosition_next);
+    self->cos_elec_position_next = lookupTblf(math_LookupX, cos_LookupY, math_LookupSize, self->motor_ElecPosition_next);
     // self->sin_elec_position = flookupTbll(sin_LookupXl, sin_LookupY, math_LookupSize, self->temp_it);
     // self->cos_elec_position = flookupTbll(sin_LookupXl, cos_LookupY, math_LookupSize, self->temp_it);
     // self->sin_elec_position_next = flookupTbll(sin_LookupXl, sin_LookupY, math_LookupSize, self->temp_it_next);
@@ -68,12 +70,12 @@ void FOC_update(volatile FOC_data* self) {
     self->I_q_avg += (self->I_q - self->I_q_avg) * 0.001f;
     
     // Rev limiter
-    if (fabsf(self->motor_speed) > MAX_SPEED) self->isOverRev = 1;
-    else if (fabsf(self->motor_speed) < MAX_SPEED_RECOV) self->isOverRev = 0;
+    // if (fabsf(self->motor_speed) > MAX_SPEED) self->isOverRev = 1;
+    // if (fabsf(self->motor_speed) < MAX_SPEED_RECOV) self->isOverRev = 0;
 
     // PI controllers on Q and D
     self->I_d_err = self->TargetFieldWk - self->I_d;
-    self->I_q_err = self->TargetCurrent * ((self->isOverRev)? 0.0f : 1.0f) - self->I_q;
+    self->I_q_err = self->TargetCurrent - self->I_q;
     self->integ_d += self->I_d_err * self->Ki_Id * 25e-6f * ((float)(1U << self->F_sw));
     self->integ_d = (self->integ_d > MAX_CMD_D) ? MAX_CMD_D : self->integ_d;
     self->integ_d = (self->integ_d < MIN_CMD_D) ? MIN_CMD_D : self->integ_d;
@@ -91,8 +93,8 @@ void FOC_update(volatile FOC_data* self) {
     self->cmd_b = self->cmd_q * self->cos_elec_position_next + self->cmd_d * self->sin_elec_position_next;
     // Inverse Clarke transform
     self->duty_u = self->cmd_a;
-    self->duty_v = (self->cmd_a * -0.5f + 0.8660254037844386f * self->cmd_b);
-    self->duty_w = (self->cmd_a * -0.5f - 0.8660254037844386f * self->cmd_b);
+    self->duty_v = (self->cmd_a * -0.5f + sqrt3o2 * self->cmd_b);
+    self->duty_w = (self->cmd_a * -0.5f - sqrt3o2 * self->cmd_b);
     writePwm(self->U_TIMER, self->duty_u * 32000.0f + 32000U);
     writePwm(self->V_TIMER, self->duty_v * 32000.0f + 32000U);
     writePwm(self->W_TIMER, self->duty_w * 32000.0f + 32000U);
