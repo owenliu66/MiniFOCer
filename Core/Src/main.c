@@ -107,7 +107,7 @@ A1333_t encoder_2 = {
 
 // ADC variables
 volatile int16_t adc_data[64];
-volatile int16_t adc_os[64] = {0, 0, 0, 0, 0, 0, 0, 0};
+volatile int16_t adc_os[64] = {0};
 
 // timing stuff
 uint32_t micros = 0;
@@ -180,6 +180,8 @@ int main(void)
   MX_SPI1_Init();
   MX_ADC4_Init();
   MX_TIM2_Init();
+  MX_TIM6_Init();
+  MX_TIM7_Init();
   /* USER CODE BEGIN 2 */
   disableGateDriver(3);
 
@@ -202,12 +204,6 @@ int main(void)
 
   // Enable microsecond counter
   LL_TIM_EnableCounter(TIM2);
-
-  // Enable drive-enable timeout counters
-  // LL_TIM_EnableIT_UPDATE(TIM6);
-  // LL_TIM_EnableCounter(TIM6);
-  // LL_TIM_EnableIT_UPDATE(TIM7);
-  // LL_TIM_EnableCounter(TIM7);
 
   // Encoder setup
   A1333_Init(&encoder_1);
@@ -261,6 +257,8 @@ int main(void)
   TxHeader.MessageMarker = 0;
   TxHeader.TxEventFifoControl = FDCAN_NO_TX_EVENTS;
   TxHeader.TxFrameType = FDCAN_DATA_FRAME;
+  CAN_TxBuffer.bot = 0;
+  CAN_TxBuffer.top = 0;
 
   // calculate DC bus and gate drive voltage
   LL_mDelay(10);
@@ -294,13 +292,13 @@ int main(void)
   // FOC1->Ki_Id = (80000 >> FOC1->F_sw) * motor_1.Res / V_bus;
   // FOC2->Kp_Id = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
   // FOC2->Ki_Id = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
-  FOC1->Kp_Iq = 0.1f;
+  FOC1->Kp_Iq = 0.05f;
   FOC1->Ki_Iq = 100.0f;
-  FOC2->Kp_Iq = 0.1f;
+  FOC2->Kp_Iq = 0.05f;
   FOC2->Ki_Iq = 100.0f;
-  FOC1->Kp_Id = 0.1f;
+  FOC1->Kp_Id = 0.05f;
   FOC1->Ki_Id = 100.0f;
-  FOC2->Kp_Id = 0.1f;
+  FOC2->Kp_Id = 0.05f;
   FOC2->Ki_Id = 100.0f;
 
   // measure ADC offset
@@ -349,11 +347,15 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  // Enable drive-enable timeout counters
+  LL_TIM_EnableIT_UPDATE(TIM6);
+  LL_TIM_EnableCounter(TIM6);
+  LL_TIM_EnableIT_UPDATE(TIM7);
+  LL_TIM_EnableCounter(TIM7);
   uint32_t lastCanSendTime = 0;
   while (1)
   {
     micros = TIM2->CNT;
-    HAL_FDCAN_AddMessageToTxFifoQ(&hfdcan1, &TxHeader, TxData);
 
     // calculate DC bus and gate drive voltage
     V_bus = (float)adc_data[6] * 0.008f;
@@ -370,17 +372,12 @@ int main(void)
     FOC1->motor_PhysPosition = encoder_1.angle;
     FOC1->motor_lastMeasTime = encoder_1.sampleTime;
     FOC1->motor_speed = encoder_1.speed;
-    FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
-    FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
-    FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents
     FOC1->TargetCurrent = -TargetCurrent1 - audio_enable_1 * (adc_data[7] - adc_os[7]) * 0.01f;
     FOC1->TargetFieldWk = 0.0f; // no field weakening
+
     FOC2->motor_PhysPosition = encoder_2.angle;
     FOC2->motor_lastMeasTime = encoder_2.sampleTime;
     FOC2->motor_speed = encoder_2.speed;
-    FOC2->U_current = (adc_data[0] - adc_os[0]) * 0.040584415584415584f;
-    FOC2->W_current = (adc_data[1] - adc_os[1]) * -0.040584415584415584f;
-    FOC2->V_current = -FOC2->U_current - FOC2->W_current; // assuming balanced currents
     FOC2->TargetCurrent = TargetCurrent2 + audio_enable_2 * (adc_data[5] - adc_os[5]) * 0.01f;
     FOC2->TargetFieldWk = 0.0f; // no field weakening
     FOC1->V_bus = V_bus; FOC2->V_bus = V_bus;
@@ -491,12 +488,12 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 void resetGateDriver(uint8_t motor){
-  if ((motor & 0x1) != 0) LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_13);
-  if ((motor & 0x2) != 0) LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_2);
+  if ((motor & 1) != 0) LL_GPIO_ResetOutputPin(GPIOC, LL_GPIO_PIN_13);
+  if ((motor & 2) != 0) LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_2);
 }
 void disableGateDriver(uint8_t motor){
-  if ((motor & 0x1) != 0) LL_GPIO_SetOutputPin(GPIOC, LL_GPIO_PIN_13);
-  if ((motor & 0x2) != 0) LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_2);
+  if ((motor & 1) != 0) LL_GPIO_SetOutputPin(GPIOC, LL_GPIO_PIN_13);
+  if ((motor & 2) != 0) LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_2);
 }
 
 void writePwm(uint32_t timer, int32_t duty){
@@ -529,30 +526,27 @@ void measureEncoderOs(uint8_t motor, float TestCurrent){
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
+      wait = true;
       FOC1->motor_PhysPosition = 0;
       FOC1->TargetCurrent = 0;
       FOC1->TargetFieldWk = TestCurrent;
       FOC1->motor_speed = 0;
-      FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
-      FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
-      FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
       __enable_irq();
-      while (TIM2->CNT - micros < 31);
+      while (wait && TIM2->CNT - micros < 20);
     }
     motor_1.encoder_os = encoder_1.angle;
     FOC1->Encoder_os = encoder_1.angle;
+    FOC1->TargetFieldWk = 0;
   }
   if ((motor & 0x2) != 0){
     disableGateDriver(1);
     resetGateDriver(2);
     FOC2->Encoder_os = 0;
-    uint16_t count = 0;
-    uint32_t sum = 0;
     TIM2->CNT = 0;
     while (TIM2->CNT < 2000000) {
       micros = TIM2->CNT;
@@ -563,27 +557,22 @@ void measureEncoderOs(uint8_t motor, float TestCurrent){
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
+      wait = true;
       FOC2->motor_PhysPosition = 0;
-      FOC2->TargetCurrent = 0;//TestCurrent * sinf((float)TIM2->CNT * 1e-6f * PIx2 * 1.0f);
+      FOC2->TargetCurrent = 0;
       FOC2->TargetFieldWk = TestCurrent;
       FOC2->motor_speed = 0;
-      FOC2->U_current = (adc_data[0] - adc_os[0]) * 0.040584415584415584f;
-      FOC2->W_current = (adc_data[1] - adc_os[1]) * -0.040584415584415584f;
-      FOC2->V_current = -FOC2->U_current - FOC2->W_current; // assuming balanced currents
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
       __ASM("nop");
       __enable_irq();
-      while (TIM2->CNT - micros < 31);
-      if (TIM2->CNT > 1000000) {
-        count++;
-        sum += encoder_2.angle;
-      }
+      while (wait && TIM2->CNT - micros < 20);
     }
-    motor_2.encoder_os = encoder_2.angle;//sum / count;
-    FOC2->Encoder_os = encoder_2.angle;//motor_2.encoder_os;
+    motor_2.encoder_os = encoder_2.angle;
+    FOC2->Encoder_os = encoder_2.angle;
+    FOC2->TargetFieldWk = 0;
   }
   disableGateDriver(3);
 }
@@ -739,11 +728,11 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       float TestCurrent2 = RxData[7] * 0.1f;
       if (RxData[6] > 0) {
         measureEncoderOs(1, TestCurrent1);
-        measureMotorKv(1, TestCurrent1);
+        // measureMotorKv(1, TestCurrent1);
       }
       if (RxData[7] > 0) {
         measureEncoderOs(2, TestCurrent2);
-        measureMotorKv(2, TestCurrent2);
+        // measureMotorKv(2, TestCurrent2);
       }
       enQueue(&CAN_TxBuffer, CAN_RDBK_ID);
     }

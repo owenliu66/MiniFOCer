@@ -69,6 +69,8 @@ extern volatile FOC_data* FOC2;
 extern A1333_t encoder_1;
 extern A1333_t encoder_2;
 extern volatile bool wait;
+extern volatile int16_t adc_data[64];
+extern volatile int16_t adc_os[64];
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -268,6 +270,42 @@ void SPI3_IRQHandler(void)
 }
 
 /**
+  * @brief This function handles TIM6 global interrupt, DAC1 and DAC3 channel underrun error interrupts.
+  */
+void TIM6_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM6_DAC_IRQn 0 */
+  LL_TIM_ClearFlag_UPDATE(TIM6);
+  disableGateDriver(1);
+  FOC1->integ_d = 0.0f;
+  FOC1->integ_q = 0.0f;
+  FOC1->TargetCurrent = 0.0f;
+  FOC1->TargetFieldWk = 0.0f;
+  /* USER CODE END TIM6_DAC_IRQn 0 */
+  /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
+
+  /* USER CODE END TIM6_DAC_IRQn 1 */
+}
+
+/**
+  * @brief This function handles TIM7 global interrupt, DAC2 and DAC4 channel underrun error interrupts.
+  */
+void TIM7_DAC_IRQHandler(void)
+{
+  /* USER CODE BEGIN TIM7_DAC_IRQn 0 */
+  LL_TIM_ClearFlag_UPDATE(TIM7);
+  disableGateDriver(2);
+  FOC2->integ_d = 0.0f;
+  FOC2->integ_q = 0.0f;
+  FOC2->TargetCurrent = 0.0f;
+  FOC2->TargetFieldWk = 0.0f;
+  /* USER CODE END TIM7_DAC_IRQn 0 */
+  /* USER CODE BEGIN TIM7_DAC_IRQn 1 */
+
+  /* USER CODE END TIM7_DAC_IRQn 1 */
+}
+
+/**
   * @brief This function handles HRTIM timer A global interrupt.
   */
 void HRTIM1_TIMA_IRQHandler(void)
@@ -279,6 +317,12 @@ void HRTIM1_TIMA_IRQHandler(void)
   __ASM("nop");
   __ASM("nop");
   LL_HRTIM_ClearFlag_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
+  FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
+  FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
+  FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents
+  FOC2->U_current = (adc_data[0] - adc_os[0]) * 0.040584415584415584f;
+  FOC2->W_current = (adc_data[1] - adc_os[1]) * -0.040584415584415584f;
+  FOC2->V_current = -FOC2->U_current - FOC2->W_current; // assuming balanced currents
   FOC_update(FOC1);
   FOC_update(FOC2);
   wait = false;

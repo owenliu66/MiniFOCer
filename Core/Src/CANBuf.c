@@ -14,7 +14,7 @@ extern float V_drv;
 extern uint8_t errors;
 
 void enQueue(CAN_flagBuf* buf, uint32_t id) {
-    if (buf->top - buf->bot < 255) {
+    if (buf->top - buf->bot < 250) {
         buf->id_buf[buf->top] = id;
         buf->top++;
     }
@@ -31,8 +31,8 @@ void deQueue(CAN_flagBuf* buf, FDCAN_HandleTypeDef* instance) {
         case CAN_STAT1_ID:
             data_i16[0] = FOC1->I_q_avg * 100.0f;
             data_i16[1] = FOC2->I_q_avg * 100.0f;
-            data_i16[2] = FOC1->motor_speed * 60e6f / N_STEP_ENCODER;
-            data_i16[3] = FOC2->motor_speed * 60e6f / N_STEP_ENCODER;
+            data_i16[2] = FOC1->motor_speed * 60e6f / (float)N_STEP_ENCODER;
+            data_i16[3] = FOC2->motor_speed * 60e6f / (float)N_STEP_ENCODER;
             memcpy(TxData, data_i16, 8);
             TxHeader.DataLength = FDCAN_DLC_BYTES_8;
             HAL_FDCAN_AddMessageToTxFifoQ(instance, &TxHeader, TxData);
