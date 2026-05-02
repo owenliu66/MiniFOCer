@@ -5,9 +5,12 @@
 #include "FOC.h"
 #include "fdcan.h"
 #include <math.h>
+#include "A1333.h"
 
 extern volatile FOC_data* FOC1;
 extern volatile FOC_data* FOC2;
+extern A1333_t encoder_1;
+extern A1333_t encoder_2;
 extern FDCAN_TxHeaderTypeDef TxHeader;
 extern uint8_t TxData[64];
 extern float V_drv;
@@ -21,6 +24,7 @@ void enQueue(CAN_flagBuf* buf, uint32_t id) {
 }
 
 void deQueue(CAN_flagBuf* buf, FDCAN_HandleTypeDef* instance) {
+    if (HAL_FDCAN_GetTxFifoFreeLevel(instance) == 0) return;
     if (buf->top != buf->bot) {
         uint16_t data_u16[4];
         int16_t data_i16[4];
@@ -31,8 +35,8 @@ void deQueue(CAN_flagBuf* buf, FDCAN_HandleTypeDef* instance) {
         case CAN_STAT1_ID:
             data_i16[0] = FOC1->I_q_avg * 100.0f;
             data_i16[1] = FOC2->I_q_avg * 100.0f;
-            data_i16[2] = FOC1->motor_speed * 60e6f / (float)N_STEP_ENCODER;
-            data_i16[3] = FOC2->motor_speed * 60e6f / (float)N_STEP_ENCODER;
+            data_i16[2] = encoder_1.speed * 60e6f / (float)N_STEP_ENCODER;
+            data_i16[3] = encoder_2.speed * 60e6f / (float)N_STEP_ENCODER;
             memcpy(TxData, data_i16, 8);
             TxHeader.DataLength = FDCAN_DLC_BYTES_8;
             HAL_FDCAN_AddMessageToTxFifoQ(instance, &TxHeader, TxData);

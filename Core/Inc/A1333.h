@@ -6,16 +6,19 @@
 #include "stm32g474xx.h"
 
 typedef struct {
-    uint16_t angle;
-    float speed;
-    uint32_t sampleTime;
+    volatile uint16_t angle;
+    volatile float speed;
+    volatile float speed_filt;
+    volatile uint32_t sampleTime;
 
     volatile uint32_t* micros;
     SPI_TypeDef* SPIx;
     GPIO_TypeDef* CS_Port;
     uint32_t CS_Pin;
 
-    bool isUpdateOngoing;
+    volatile bool isUpdateOngoing;
+
+    volatile int32_t delta;
 } A1333_t;
 
 

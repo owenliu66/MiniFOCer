@@ -29,15 +29,14 @@ volatile const uint8_t SVPWM_PermuataionMatrix[6][3] = {
 	{ 1, 0, 3 }
 };
 
-void FOC_update(volatile FOC_data* self) {
+void FOC_update(FOC_data* self) {
     // FOC
     self->temp_it = self->motor_PhysPosition - self->Encoder_os;
     self->temp_it_next = self->temp_it;
     // compensate for the time delay if motor speed is high
     // if (fabsf(self->motor_speed) > ((300.0f/60.0f)*1e-6f*N_STEP_ENCODER * 0.02f)){
-        uint32_t TIM2_CNT = TIM2->CNT;
-        self->temp_it      += ((int32_t)(TIM2_CNT - self->motor_lastMeasTime)                                ) * (int32_t)(self->motor_speed);
-        self->temp_it_next += ((int32_t)(TIM2_CNT - self->motor_lastMeasTime) + (int32_t)(19UL << self->F_sw)) * (int32_t)(self->motor_speed);
+        self->temp_it      += ((int32_t)(self->current_time - self->motor_lastMeasTime)                                ) * (int32_t)(self->motor_speed);
+        self->temp_it_next += ((int32_t)(self->current_time - self->motor_lastMeasTime) + (int32_t)(19UL << self->F_sw)) * (int32_t)(self->motor_speed);
     // }
     self->temp_it *= N_POLES;
     self->temp_it %= N_STEP_ENCODER;
@@ -66,8 +65,8 @@ void FOC_update(volatile FOC_data* self) {
     // Park transform
     self->I_d = self->I_a * self->cos_elec_position + self->I_b * self->sin_elec_position;
     self->I_q = self->I_b * self->cos_elec_position - self->I_a * self->sin_elec_position;
-    self->I_d_avg += (self->I_d - self->I_d_avg) * 0.001f;
-    self->I_q_avg += (self->I_q - self->I_q_avg) * 0.001f;
+    self->I_d_avg += (self->I_d - self->I_d_avg) * 0.1f;
+    self->I_q_avg += (self->I_q - self->I_q_avg) * 0.1f;
     
     // Rev limiter
     // if (fabsf(self->motor_speed) > MAX_SPEED) self->isOverRev = 1;
@@ -83,7 +82,7 @@ void FOC_update(volatile FOC_data* self) {
     self->integ_q += self->I_q_err * self->Ki_Iq * 25e-6f * ((float)(1U << self->F_sw));
     self->integ_q = (self->integ_q > MAX_CMD_Q) ? MAX_CMD_Q : self->integ_q;
     self->integ_q = (self->integ_q < MIN_CMD_Q) ? MIN_CMD_Q : self->integ_q;
-    self->cmd_q = self->I_q_err * self->Kp_Iq + self->integ_q;// + self->motor_speed / self->motor_kv / self->V_bus;
+    self->cmd_q = self->I_q_err * self->Kp_Iq + self->integ_q;// - self->motor_speed / self->motor_kv / self->V_bus;
 
     // self->cmd_d = 0.0f;
     // self->cmd_q = 0.1f;

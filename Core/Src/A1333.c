@@ -57,6 +57,7 @@ void A1333_Init(A1333_t* sensor) {
     LL_SPI_Enable(sensor->SPIx);
     sensor->angle = 0;
     sensor->speed = 0;
+    sensor->speed_filt = 3;
     sensor->sampleTime = 0;
     sensor->isUpdateOngoing = false;
 }
@@ -74,16 +75,16 @@ void A1333_SPI_IRQHandler(A1333_t* sensor) {
     sensor->isUpdateOngoing = false;
     
     // receivedData += compensation[receivedData * compensation_size / 32768];
-    int32_t delta = receivedData - sensor->angle;
-    if (delta > 16384) {
-      delta -= 32768;
-    } else if (delta < -16384) {
-      delta += 32768;
+    sensor->delta = receivedData - sensor->angle;
+    if (sensor->delta > 16384) {
+      sensor->delta -= 32768;
+    } else if (sensor->delta < -16384) {
+      sensor->delta += 32768;
     }
     // sampleTime = sampleTime > sensor->sampleTime ? sampleTime : sensor->sampleTime + 1;
-    float newSpeed = (float)delta / (float)(sampleTime - sensor->sampleTime);
-    sensor->speed += (newSpeed - sensor->speed) * 0.01f;
-    // sensor->speed = newSpeed;
+    sensor->speed = (float)(sensor->delta) / (float)(sampleTime - sensor->sampleTime);
+    sensor->speed_filt = sensor->speed_filt + (sensor->speed - sensor->speed_filt) * 0.1f;
+    
     sensor->sampleTime = sampleTime;
     sensor->angle = receivedData;
 }

@@ -64,13 +64,14 @@ extern void disableGateDriver(uint8_t motor);
 /* External variables --------------------------------------------------------*/
 extern FDCAN_HandleTypeDef hfdcan1;
 /* USER CODE BEGIN EV */
-extern volatile FOC_data* FOC1;
-extern volatile FOC_data* FOC2;
+extern FOC_data* FOC1;
+extern FOC_data* FOC2;
 extern A1333_t encoder_1;
 extern A1333_t encoder_2;
 extern volatile bool wait;
 extern volatile int16_t adc_data[64];
 extern volatile int16_t adc_os[64];
+extern volatile uint8_t errors;
 /* USER CODE END EV */
 
 /******************************************************************************/
@@ -196,11 +197,19 @@ void PendSV_Handler(void)
 void SysTick_Handler(void)
 {
   /* USER CODE BEGIN SysTick_IRQn 0 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END SysTick_IRQn 0 */
   HAL_IncTick();
   /* USER CODE BEGIN SysTick_IRQn 1 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END SysTick_IRQn 1 */
 }
 
@@ -217,11 +226,19 @@ void SysTick_Handler(void)
 void FDCAN1_IT0_IRQHandler(void)
 {
   /* USER CODE BEGIN FDCAN1_IT0_IRQn 0 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END FDCAN1_IT0_IRQn 0 */
   HAL_FDCAN_IRQHandler(&hfdcan1);
   /* USER CODE BEGIN FDCAN1_IT0_IRQn 1 */
-
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
+  __ASM("nop");
   /* USER CODE END FDCAN1_IT0_IRQn 1 */
 }
 
@@ -236,7 +253,11 @@ void SPI1_IRQHandler(void)
   __ASM("nop");
   __ASM("nop");
   __ASM("nop");
+  #ifdef CAN_CONFIG_2
+  A1333_SPI_IRQHandler(&encoder_1);
+  #else
   A1333_SPI_IRQHandler(&encoder_2);
+  #endif
   /* USER CODE END SPI1_IRQn 0 */
   /* USER CODE BEGIN SPI1_IRQn 1 */
   __ASM("nop");
@@ -258,7 +279,11 @@ void SPI3_IRQHandler(void)
   __ASM("nop");
   __ASM("nop");
   __ASM("nop");
+  #ifdef CAN_CONFIG_2
+  A1333_SPI_IRQHandler(&encoder_2);
+  #else
   A1333_SPI_IRQHandler(&encoder_1);
+  #endif
   /* USER CODE END SPI3_IRQn 0 */
   /* USER CODE BEGIN SPI3_IRQn 1 */
   __ASM("nop");
@@ -281,6 +306,7 @@ void TIM6_DAC_IRQHandler(void)
   FOC1->integ_q = 0.0f;
   FOC1->TargetCurrent = 0.0f;
   FOC1->TargetFieldWk = 0.0f;
+  errors |= ERR_DRV_EN_1;
   /* USER CODE END TIM6_DAC_IRQn 0 */
   /* USER CODE BEGIN TIM6_DAC_IRQn 1 */
 
@@ -299,6 +325,7 @@ void TIM7_DAC_IRQHandler(void)
   FOC2->integ_q = 0.0f;
   FOC2->TargetCurrent = 0.0f;
   FOC2->TargetFieldWk = 0.0f;
+  errors |= ERR_DRV_EN_2;
   /* USER CODE END TIM7_DAC_IRQn 0 */
   /* USER CODE BEGIN TIM7_DAC_IRQn 1 */
 
@@ -317,6 +344,8 @@ void HRTIM1_TIMA_IRQHandler(void)
   __ASM("nop");
   __ASM("nop");
   LL_HRTIM_ClearFlag_UPDATE(HRTIM1, LL_HRTIM_TIMER_A);
+  FOC1->current_time = TIM2->CNT;
+  FOC2->current_time = TIM2->CNT;
   FOC1->U_current = (adc_data[2] - adc_os[2]) * 0.040584415584415584f;
   FOC1->W_current = (adc_data[3] - adc_os[3]) * -0.040584415584415584f;
   FOC1->V_current = -FOC1->U_current - FOC1->W_current; // assuming balanced currents

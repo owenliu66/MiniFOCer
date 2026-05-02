@@ -29,18 +29,19 @@ typedef struct {
     volatile uint32_t motor_lastMeasTime; // us
     volatile float motor_kv; // LSB/us/Volt
     volatile float V_bus; // Volt
+    volatile uint32_t current_time; // us
 
-    volatile int32_t temp_it, temp_it_next;
-    volatile float sin_elec_position, cos_elec_position;
-    volatile float sin_elec_position_next, cos_elec_position_next;
-    volatile float I_a, I_b, I_q, I_d;
+    int32_t temp_it, temp_it_next;
+    float sin_elec_position, cos_elec_position;
+    float sin_elec_position_next, cos_elec_position_next;
+    float I_a, I_b, I_q, I_d;
     volatile float I_q_avg, I_d_avg;
     volatile float cmd_q, cmd_d;
-    volatile float cmd_a, cmd_b;
-    volatile float integ_q, integ_d;
+    float cmd_a, cmd_b;
+    float integ_q, integ_d;
     volatile float Kp_Iq, Ki_Iq;
     volatile float Kp_Id, Ki_Id;
-    volatile float I_d_err, I_q_err;
+    float I_d_err, I_q_err;
     volatile float TargetCurrent;
     volatile float TargetFieldWk;
     volatile uint8_t isOverRev;
@@ -63,7 +64,7 @@ typedef struct {
 } FOC_data;
 
 // FOC functions
-void FOC_update(volatile FOC_data* self);
+void FOC_update(FOC_data* self);
 
 
 #endif

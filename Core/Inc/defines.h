@@ -26,8 +26,8 @@
 
 #define N_STEP_ENCODER 32768
 #define N_POLES 7
-#define MAX_SPEED       0000.0f/60.0f*1e-6f*N_STEP_ENCODER
-#define MAX_SPEED_RECOV 0000.0f/60.0f*1e-6f*N_STEP_ENCODER
+#define MAX_SPEED       4000.0f/60.0f*1e-6f*N_STEP_ENCODER
+#define MAX_SPEED_RECOV 3600.0f/60.0f*1e-6f*N_STEP_ENCODER
 
 // FOC constants
 #define MAX_CMD_D 0.5f
@@ -35,6 +35,20 @@
 #define MAX_CMD_Q 1.0f
 #define MIN_CMD_Q -1.0f
 
+#define CAN_CONFIG_2
+#ifdef CAN_CONFIG_2
+// CANBus receive IDs
+#define CAN_CMD_ID 0x211708UL
+#define CAN_CFG_ID 0x211608UL
+#define CAN_SETUP1_ID 0x211808UL
+#define CAN_SETUP2_ID 0x211908UL
+// CANBus send IDs
+#define CAN_STAT1_ID 0x811302UL
+#define CAN_STAT2_ID 0x811402UL
+#define CAN_STAT3_ID 0x811502UL
+#define CAN_RDBK_ID 0x811602UL
+#define CAN_DEBUG_ID 0x110008UL
+#else
 // CANBus receive IDs
 #define CAN_CMD_ID 0x201708UL
 #define CAN_CFG_ID 0x201608UL
@@ -46,8 +60,11 @@
 #define CAN_STAT3_ID 0x801502UL
 #define CAN_RDBK_ID 0x801602UL
 #define CAN_DEBUG_ID 0x100008UL
+#endif
 
 // Error masks
+#define ERR_DRV_EN_1 0x10U
+#define ERR_DRV_EN_2 0x08U
 #define ERR_M1_OCP 0x04U
 #define ERR_M2_OCP 0x02U
 #define ERR_UVP 0x01U

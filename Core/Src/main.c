@@ -68,8 +68,8 @@ FDCAN_TxHeaderTypeDef TxHeader;
 uint8_t TxData[64];
 
 // FOC variables
-volatile FOC_data* FOC1;
-volatile FOC_data* FOC2;
+FOC_data* FOC1;
+FOC_data* FOC2;
 
 // Motor variables
 float TargetCurrent1 = 2.0f, TargetCurrent2 = 2.0f;
@@ -88,10 +88,24 @@ motor_t motor_2 = {
 };
 
 // Power status variables
-float V_bus = 0, V_drv = 0;
-float UVLO_thresh = 9.5, UVLO_hyst = 0.5;
+float V_bus = 0.0f, V_drv = 0.0f;
+float UVLO_thresh = 12.0f, UVLO_hyst = 0.5f;
 
 // Encoders
+#ifdef CAN_CONFIG_2
+A1333_t encoder_2 = {
+  .SPIx = SPI3,
+  .CS_Port = GPIOA,
+  .CS_Pin = LL_GPIO_PIN_15,
+  .micros = &(TIM2->CNT),
+};
+A1333_t encoder_1 = {
+  .SPIx = SPI1,
+  .CS_Port = GPIOD,
+  .CS_Pin = LL_GPIO_PIN_2,
+  .micros = &(TIM2->CNT),
+};
+#else
 A1333_t encoder_1 = {
   .SPIx = SPI3,
   .CS_Port = GPIOA,
@@ -104,6 +118,7 @@ A1333_t encoder_2 = {
   .CS_Pin = LL_GPIO_PIN_2,
   .micros = &(TIM2->CNT),
 };
+#endif
 
 // ADC variables
 volatile int16_t adc_data[64];
@@ -121,7 +136,7 @@ CAN_flagBuf CAN_TxBuffer = {0};
 bool audio_enable_1 = true, audio_enable_2 = true;
 
 // Errors
-uint8_t errors = 0;
+volatile uint8_t errors = 0;
 
 /* USER CODE END PV */
 
@@ -246,8 +261,6 @@ int main(void)
   LL_ADC_REG_StartConversion(ADC4);
 
   // CANbus setup
-  HAL_FDCAN_Start(&hfdcan1);
-  HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
   TxHeader.BitRateSwitch = FDCAN_BRS_OFF;
   TxHeader.DataLength = FDCAN_DLC_BYTES_8;
   TxHeader.ErrorStateIndicator = FDCAN_ESI_ACTIVE;
@@ -304,14 +317,14 @@ int main(void)
   // measure ADC offset
   for (uint16_t i = 0; i < 100; i++){
     LL_mDelay(10);
-    adc_os[0] = (adc_os[0]*3 + adc_data[0]) >> 2;
-    adc_os[1] = (adc_os[1]*3 + adc_data[1]) >> 2;
-    adc_os[2] = (adc_os[2]*3 + adc_data[2]) >> 2;
-    adc_os[3] = (adc_os[3]*3 + adc_data[3]) >> 2;
-    adc_os[4] = (adc_os[4]*3 + adc_data[4]) >> 2;
-    adc_os[5] = (adc_os[5]*3 + adc_data[5]) >> 2;
-    adc_os[6] = (adc_os[6]*3 + adc_data[6]) >> 2;
-    adc_os[7] = (adc_os[7]*3 + adc_data[7]) >> 2;
+    adc_os[0] = (adc_os[0]*3 + adc_data[0] + 2) >> 2;
+    adc_os[1] = (adc_os[1]*3 + adc_data[1] + 2) >> 2;
+    adc_os[2] = (adc_os[2]*3 + adc_data[2] + 2) >> 2;
+    adc_os[3] = (adc_os[3]*3 + adc_data[3] + 2) >> 2;
+    adc_os[4] = (adc_os[4]*3 + adc_data[4] + 2) >> 2;
+    adc_os[5] = (adc_os[5]*3 + adc_data[5] + 2) >> 2;
+    adc_os[6] = (adc_os[6]*3 + adc_data[6] + 2) >> 2;
+    adc_os[7] = (adc_os[7]*3 + adc_data[7] + 2) >> 2;
   }
 
   // Enable HRTIM (gate drive signals)
@@ -343,6 +356,8 @@ int main(void)
   measureEncoderOs(3, 5);
   // measureMotorKv(3, 10);
   resetGateDriver(3);
+  HAL_FDCAN_Start(&hfdcan1);
+  HAL_FDCAN_ActivateNotification(&hfdcan1, FDCAN_IT_RX_FIFO0_NEW_MESSAGE, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -374,12 +389,14 @@ int main(void)
     FOC1->motor_speed = encoder_1.speed;
     FOC1->TargetCurrent = -TargetCurrent1 - audio_enable_1 * (adc_data[7] - adc_os[7]) * 0.01f;
     FOC1->TargetFieldWk = 0.0f; // no field weakening
+    FOC1->Encoder_os = motor_1.encoder_os;
 
     FOC2->motor_PhysPosition = encoder_2.angle;
     FOC2->motor_lastMeasTime = encoder_2.sampleTime;
     FOC2->motor_speed = encoder_2.speed;
     FOC2->TargetCurrent = TargetCurrent2 + audio_enable_2 * (adc_data[5] - adc_os[5]) * 0.01f;
     FOC2->TargetFieldWk = 0.0f; // no field weakening
+    FOC2->Encoder_os = motor_2.encoder_os; 
     FOC1->V_bus = V_bus; FOC2->V_bus = V_bus;
     // Flush pipeline
     __ASM("nop");
@@ -395,7 +412,7 @@ int main(void)
 
     // V_bus UVLO check
     if (V_bus > UVLO_thresh + UVLO_hyst) {
-      errors &= !ERR_UVP;
+      errors &= (~ERR_UVP);
     }
     else if (V_bus < UVLO_thresh - UVLO_hyst) {
       errors |= ERR_UVP;
@@ -418,18 +435,21 @@ int main(void)
     }
 
     // Rev limiter TODO: fix
-    // if (fabsf(encoder_1.speed) > MAX_SPEED) disableGateDriver(1);
-    // if (fabsf(encoder_1.speed) < MAX_SPEED_RECOV && errors == 0) resetGateDriver(1);
+    if (fabsf(encoder_1.speed) > MAX_SPEED) disableGateDriver(1);
+    if (fabsf(encoder_1.speed) < MAX_SPEED_RECOV && errors == 0) resetGateDriver(1);
+    if (fabsf(encoder_2.speed) > MAX_SPEED) disableGateDriver(2);
+    if (fabsf(encoder_2.speed) < MAX_SPEED_RECOV && errors == 0) resetGateDriver(2);
 
     if (micros - lastCanSendTime > 20000) {
-      lastCanSendTime = micros;
+      lastCanSendTime += 20000;
       enQueue(&CAN_TxBuffer, CAN_STAT1_ID);
       enQueue(&CAN_TxBuffer, CAN_STAT2_ID);
       enQueue(&CAN_TxBuffer, CAN_STAT3_ID);
+      enQueue(&CAN_TxBuffer, CAN_RDBK_ID);
     }
     deQueue(&CAN_TxBuffer, &hfdcan1);
 
-    while (wait && TIM2->CNT - micros < 50);
+    while (wait && TIM2->CNT - micros < 100);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -676,6 +696,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       if ((RxData[4] & 0x1) != 0 && (errors & !ERR_M1_OCP) == 0) {
         resetGateDriver(2);
         LL_TIM_SetCounter(TIM7, 0); // reset drive-enable timeout counter
+        errors &= (~ERR_DRV_EN_1);
       }
       else {
         disableGateDriver(2);
@@ -684,6 +705,7 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       if ((RxData[4] & 0x2) != 0 && (errors & !ERR_M2_OCP) == 0) {
         resetGateDriver(1);
         LL_TIM_SetCounter(TIM6, 0); // reset drive-enable timeout counter
+        errors &= (~ERR_DRV_EN_2);
       }
       else {
         disableGateDriver(1);
@@ -715,27 +737,27 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t RxFifo0ITs)
       FOC2->Kp_Id = (80000 >> FOC2->F_sw) * motor_2.Ind / V_bus;
       FOC2->Ki_Id = (80000 >> FOC2->F_sw) * motor_2.Res / V_bus;
     }
-    else if (RxHeader.Identifier == CAN_SETUP2_ID) {
-      memcpy(&motor_1.encoder_os, &RxData[0], 2);
-      memcpy(&motor_2.encoder_os, &RxData[2], 2);
-      FOC1->Encoder_os = motor_1.encoder_os;
-      FOC2->Encoder_os = motor_2.encoder_os;
-      motor_1.kv = RxData[4] * 1.6666666666666667e-7f * N_STEP_ENCODER;
-      motor_2.kv = RxData[5] * 1.6666666666666667e-7f * N_STEP_ENCODER;
-      FOC1->motor_kv = motor_1.kv;
-      FOC2->motor_kv = motor_2.kv;
-      float TestCurrent1 = RxData[6] * 0.1f;
-      float TestCurrent2 = RxData[7] * 0.1f;
-      if (RxData[6] > 0) {
-        measureEncoderOs(1, TestCurrent1);
-        // measureMotorKv(1, TestCurrent1);
-      }
-      if (RxData[7] > 0) {
-        measureEncoderOs(2, TestCurrent2);
-        // measureMotorKv(2, TestCurrent2);
-      }
-      enQueue(&CAN_TxBuffer, CAN_RDBK_ID);
-    }
+    // else if (RxHeader.Identifier == CAN_SETUP2_ID) {
+    //   memcpy(&motor_1.encoder_os, &RxData[0], 2);
+    //   memcpy(&motor_2.encoder_os, &RxData[2], 2);
+    //   FOC1->Encoder_os = motor_1.encoder_os;
+    //   FOC2->Encoder_os = motor_2.encoder_os;
+    //   motor_1.kv = RxData[4] * 1.6666666666666667e-7f * N_STEP_ENCODER;
+    //   motor_2.kv = RxData[5] * 1.6666666666666667e-7f * N_STEP_ENCODER;
+    //   FOC1->motor_kv = motor_1.kv;
+    //   FOC2->motor_kv = motor_2.kv;
+    //   float TestCurrent1 = RxData[6] * 0.1f;
+    //   float TestCurrent2 = RxData[7] * 0.1f;
+    //   if (RxData[6] > 0) {
+    //     measureEncoderOs(1, TestCurrent1);
+    //     // measureMotorKv(1, TestCurrent1);
+    //   }
+    //   if (RxData[7] > 0) {
+    //     measureEncoderOs(2, TestCurrent2);
+    //     // measureMotorKv(2, TestCurrent2);
+    //   }
+    //   enQueue(&CAN_TxBuffer, CAN_RDBK_ID);
+    // }
   }
 }
 /* USER CODE END 4 */
