@@ -35,8 +35,8 @@ void deQueue(CAN_flagBuf* buf, FDCAN_HandleTypeDef* instance) {
         case CAN_STAT1_ID:
             data_i16[0] = FOC1->I_q_avg * 100.0f;
             data_i16[1] = FOC2->I_q_avg * 100.0f;
-            data_i16[2] = encoder_1.speed * 60e6f / (float)N_STEP_ENCODER;
-            data_i16[3] = encoder_2.speed * 60e6f / (float)N_STEP_ENCODER;
+            data_i16[2] = encoder_1.speed_filt * 60e6f / (float)N_STEP_ENCODER;
+            data_i16[3] = encoder_2.speed_filt * 60e6f / (float)N_STEP_ENCODER;
             memcpy(TxData, data_i16, 8);
             TxHeader.DataLength = FDCAN_DLC_BYTES_8;
             HAL_FDCAN_AddMessageToTxFifoQ(instance, &TxHeader, TxData);

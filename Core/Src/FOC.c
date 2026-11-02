@@ -94,29 +94,18 @@ void FOC_update(FOC_data* self) {
     self->duty_u = self->cmd_a;
     self->duty_v = (self->cmd_a * -0.5f + sqrt3o2 * self->cmd_b);
     self->duty_w = (self->cmd_a * -0.5f - sqrt3o2 * self->cmd_b);
+
+    // Min-Max SVM method
+    float mid = (fmaxf(fmaxf(self->duty_u, self->duty_v), self->duty_w) + 
+                 fminf(fminf(self->duty_u, self->duty_v), self->duty_w)) * 0.5f;
+    self->duty_u -= mid;
+    self->duty_v -= mid;
+    self->duty_w -= mid;
+
+    // Apply new duty cycles
     writePwm(self->U_TIMER, self->duty_u * 32000.0f + 32000U);
     writePwm(self->V_TIMER, self->duty_v * 32000.0f + 32000U);
     writePwm(self->W_TIMER, self->duty_w * 32000.0f + 32000U);
-
-    // SVPWM generation
-    // self->SVPWM_mag = hypotf(self->cmd_b, self->cmd_a);
-    // self->SVPWM_ang = atan2f(self->cmd_b, self->cmd_a);
-    // self->SVPWM_ang += PI;
-    // self->SVPWM_sector = (uint8_t)(self->SVPWM_ang * PI_3o);
-    // self->SVPWM_beta = self->SVPWM_ang - PIo3 * self->SVPWM_sector;
-    // self->SVPWM_Tb1 = self->SVPWM_mag * sinf(PIo3 - self->SVPWM_beta);
-    // self->SVPWM_Tb2 = self->SVPWM_mag * sinf(self->SVPWM_beta);
-    // self->SVPWM_Ti[0] = (1.0f - self->SVPWM_Tb1 - self->SVPWM_Tb2) * 0.5f;
-    // self->SVPWM_Ti[1] = self->SVPWM_Tb1 + self->SVPWM_Tb2 + self->SVPWM_Ti[0];
-    // self->SVPWM_Ti[2] = self->SVPWM_Tb2 + self->SVPWM_Ti[0];
-    // self->SVPWM_Ti[3] = self->SVPWM_Tb1 + self->SVPWM_Ti[0];
-    // self->duty_u = self->SVPWM_Ti[SVPWM_PermuataionMatrix[self->SVPWM_sector][0]];
-    // self->duty_v = self->SVPWM_Ti[SVPWM_PermuataionMatrix[self->SVPWM_sector][1]];
-    // self->duty_w = self->SVPWM_Ti[SVPWM_PermuataionMatrix[self->SVPWM_sector][2]];
-    // writePwm(U1_TIMER, self->duty_u * 64000.0f);
-    // writePwm(V1_TIMER, self->duty_v * 64000.0f);
-    // writePwm(W1_TIMER, self->duty_w * 64000.0f);
-    // if (sendCANBus_flag == 0) sendCANBus_flag = 1;
     
     // TxHeaderIT.BitRateSwitch = FDCAN_BRS_OFF;
     // TxHeaderIT.DataLength = FDCAN_DLC_BYTES_8;

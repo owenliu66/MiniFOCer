@@ -72,8 +72,8 @@ FOC_data* FOC1;
 FOC_data* FOC2;
 
 // Motor variables
-float TargetCurrent1 = 2.0f, TargetCurrent2 = 2.0f;
-float MaxCurrent = 10.0f, MaxAbsCurrent = 40.0f;
+volatile float TargetCurrent1 = 2.0f, TargetCurrent2 = 2.0f;
+float MaxCurrent = 20.0f, MaxAbsCurrent = 40.0f;
 motor_t motor_1 = {
   .Ind = 120e-6,
   .Res = 0.26,
@@ -133,7 +133,7 @@ volatile uint8_t sendCANBus_flag = 0;
 CAN_flagBuf CAN_TxBuffer = {0};
 
 // For fun
-bool audio_enable_1 = true, audio_enable_2 = true;
+bool audio_enable_1 = false, audio_enable_2 = false;
 
 // Errors
 volatile uint8_t errors = 0;

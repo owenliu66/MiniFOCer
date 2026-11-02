@@ -1,5 +1,6 @@
 #include "A1333.h"
 #include "spi.h"
+#include <math.h>
 
 int16_t compensation[] = {17, 21, 17, 25, 14, 9, 12, -9, -4, -13, -30, -26, -49, -56, -60, -81, -78, -101, -113, -115, -135, -143, -154, -167, -167, -183, -187, -183, -189, -179, -181, -184, -174, -177, -169, -162, -169, -152, -151, -146, -131, -137, -127, -111, -120, -101, -99, -96, -79, -86, -80, -71, -77, -66, -67, -73, -61, -73, -67, -62, -77, -71, -74, -86, -80, -91, -92, -91, -106, -98, -108, -112, -104, -111, -108, -100, -110, -101, -104, -106, -95, -96, -88, -80, -85, -71, -66, -64, -49, -56, -42, -30, -33, -19, -16};
 uint16_t compensation_size = sizeof(compensation) / sizeof(compensation[0]);
@@ -57,7 +58,7 @@ void A1333_Init(A1333_t* sensor) {
     LL_SPI_Enable(sensor->SPIx);
     sensor->angle = 0;
     sensor->speed = 0;
-    sensor->speed_filt = 3;
+    sensor->speed_filt = 0;
     sensor->sampleTime = 0;
     sensor->isUpdateOngoing = false;
 }
@@ -81,7 +82,7 @@ void A1333_SPI_IRQHandler(A1333_t* sensor) {
     } else if (sensor->delta < -16384) {
       sensor->delta += 32768;
     }
-    // sampleTime = sampleTime > sensor->sampleTime ? sampleTime : sensor->sampleTime + 1;
+    sampleTime = sampleTime > sensor->sampleTime ? sampleTime : sensor->sampleTime + 1;
     sensor->speed = (float)(sensor->delta) / (float)(sampleTime - sensor->sampleTime);
     sensor->speed_filt = sensor->speed_filt + (sensor->speed - sensor->speed_filt) * 0.1f;
     
